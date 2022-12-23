@@ -175,8 +175,9 @@ namespace TheLiquidFire.Notifications
             {
                 var handlers = subTable[sender];
                 _invoking.Add(handlers);
-                for (var i = 0; i < handlers.Count; ++i)
-                    handlers[i](sender, e);
+                foreach (var handler in handlers)
+                    handler(sender, e);
+
                 _invoking.Remove(handlers);
             }
 
@@ -185,8 +186,9 @@ namespace TheLiquidFire.Notifications
             {
                 var handlers = subTable[this];
                 _invoking.Add(handlers);
-                for (var i = 0; i < handlers.Count; ++i)
-                    handlers[i](sender, e);
+                foreach (var handler in handlers)
+                    handler(sender, e);
+
                 _invoking.Remove(handlers);
             }
         }

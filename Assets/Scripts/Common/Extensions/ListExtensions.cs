@@ -17,7 +17,7 @@ namespace TheLiquidFire.Extensions
 
         public static T Last<T>(this List<T> list)
         {
-            return list[list.Count - 1];
+            return list[^1];
         }
     }
 }

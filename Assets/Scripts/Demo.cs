@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TheLiquidFire.AspectContainer;
 using UnityEngine;
 
 [Serializable]

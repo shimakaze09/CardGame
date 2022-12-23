@@ -17,7 +17,7 @@ namespace TheLiquidFire.Extensions
 
         public static T Last<T>(this T[] array)
         {
-            return array[array.Length - 1];
+            return array[^1];
         }
 
         public static bool Matches<T>(this T[] array1, T[] array2)
