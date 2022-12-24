@@ -99,8 +99,10 @@ public class ActionSystemTests
                 AddReactions((IContainer)sender);
             if (action.priority == depthCheckPriority)
             {
-                var reaction = new TestAction();
-                reaction.orderOfPlay = depthReactionOrder;
+                var reaction = new TestAction
+                {
+                    orderOfPlay = depthReactionOrder
+                };
                 ((IContainer)sender).GetAspect<ActionSystem>().AddReaction(reaction);
             }
 
@@ -156,7 +158,7 @@ public class ActionSystemTests
     [SetUp]
     public void TestSetup()
     {
-        NotificationCenter.instance.Clean();
+        NotificationCenter.Instance.Clean();
         game = new Container();
         actionSystem = game.AddAspect<ActionSystem>();
         testSystem = game.AddAspect<TestSystem>();

@@ -1,31 +1,38 @@
-﻿namespace TheLiquidFire.AspectContainer
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace TheLiquidFire.AspectContainer
 {
     public class StateMachine : Aspect
     {
-        public delegate void StateChangeHandler(IState fromState, IState toState);
-
         public IState currentState { get; private set; }
-        public event StateChangeHandler didChangeStateEvent;
+        public IState previousState { get; private set; }
 
         public void ChangeState<T>() where T : class, IState, new()
         {
-            var previousState = currentState;
-            var nextState = container.GetAspect<T>() ?? container.AddAspect<T>();
+            var fromState = currentState;
+            var toState = container.GetAspect<T>() ?? container.AddAspect<T>();
 
-            if (previousState != null)
+            if (fromState != null)
             {
-                if (previousState == nextState || previousState.CanTransition(nextState) == false)
+                if (fromState == toState || fromState.CanTransition(toState) == false)
                     return;
-                previousState.Exit();
+                fromState.Exit();
             }
 
-            currentState = nextState;
+            currentState = toState;
+            previousState = fromState;
+            toState.Enter();
+        }
+    }
 
-            var handler = didChangeStateEvent;
-            if (handler != null)
-                handler(previousState, nextState);
-
-            nextState.Enter();
+    public static class StateMachineExtensions
+    {
+        public static void ChangeState<T>(this IContainer game) where T : class, IState, new()
+        {
+            var stateMachine = game.GetAspect<StateMachine>();
+            stateMachine.ChangeState<T>();
         }
     }
 }

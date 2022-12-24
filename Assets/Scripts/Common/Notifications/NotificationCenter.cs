@@ -33,7 +33,7 @@ namespace TheLiquidFire.Notifications
 
         #region Singleton Pattern
 
-        public static readonly NotificationCenter instance = new();
+        public static readonly NotificationCenter Instance = new();
 
         private NotificationCenter()
         {
@@ -67,7 +67,7 @@ namespace TheLiquidFire.Notifications
 
             var subTable = _table[notificationName];
 
-            var key = sender != null ? sender : this;
+            var key = sender ?? this;
 
             if (!subTable.ContainsKey(key))
                 subTable.Add(key, new List<Handler>());
@@ -106,7 +106,7 @@ namespace TheLiquidFire.Notifications
                 return;
 
             var subTable = _table[notificationName];
-            var key = sender != null ? sender : this;
+            var key = sender ?? this;
 
             if (!subTable.ContainsKey(key))
                 return;
