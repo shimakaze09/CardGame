@@ -19,7 +19,7 @@ public class CardView : MonoBehaviour
 
     private void Awake()
     {
-        faceUpElements = new GameObject[]
+        faceUpElements = new[]
         {
             cardFront.gameObject,
             healthText.gameObject,
@@ -28,7 +28,7 @@ public class CardView : MonoBehaviour
             titleText.gameObject,
             cardText.gameObject
         };
-        faceDownElements = new GameObject[]
+        faceDownElements = new[]
         {
             cardBack.gameObject
         };

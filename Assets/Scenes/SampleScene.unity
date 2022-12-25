@@ -948,8 +948,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 657271ddee80d4e769973962d4ed581a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeHandle: {fileID: 75450540}
   cards: []
+  activeHandle: {fileID: 75450540}
   inactiveHandle: {fileID: 764280846}
 --- !u!1 &330585543
 GameObject:
@@ -1816,8 +1816,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 657271ddee80d4e769973962d4ed581a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeHandle: {fileID: 1255561222}
   cards: []
+  activeHandle: {fileID: 1255561222}
   inactiveHandle: {fileID: 472247470}
 --- !u!4 &1028911707 stripped
 Transform:
@@ -2489,6 +2489,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1332820910}
+  - component: {fileID: 1332820911}
   m_Layer: 0
   m_Name: Fatigue View
   m_TagString: Untagged
@@ -2512,6 +2513,19 @@ Transform:
   m_Father: {fileID: 1119274435}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1332820911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332820909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 090cc218bffad9a4d8ae58ac03083ca3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fatigueLabel: {fileID: 1690653514}
 --- !u!1 &1579511323
 GameObject:
   m_ObjectHideFlags: 0

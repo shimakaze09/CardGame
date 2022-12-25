@@ -2,9 +2,17 @@
 
 public class PlayerView : MonoBehaviour
 {
-    public GameObject cardPrefab;
     public DeckView deck;
     public HandView hand;
-    public HeroView hero;
     public TableView table;
+    public HeroView hero;
+    public GameObject cardPrefab;
+    public Player player { get; private set; }
+
+    public void SetPlayer(Player player)
+    {
+        this.player = player;
+        var heroCard = player.hero[0] as Hero;
+        hero.SetHero(heroCard);
+    }
 }

@@ -60,6 +60,9 @@ public class PlayerSystem : Aspect, IObserve
     {
         var action = args as FatigueAction;
         action.player.fatigue++;
+        var damageTarget = action.player.hero[0] as IDestructable;
+        var damageAction = new DamageAction(damageTarget, action.player.fatigue);
+        container.AddReaction(damageAction);
     }
 
     private void OnPerformOverDraw(object sender, object args)

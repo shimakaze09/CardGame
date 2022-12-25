@@ -28,11 +28,11 @@ public class GameViewSystem : MonoBehaviour, IAspect
     {
         container.Awake();
         actionSystem = container.GetAspect<ActionSystem>();
+        Temp_SetupSinglePlayer();
     }
 
     private void Start()
     {
-        Temp_SetupSinglePlayer();
         container.ChangeState<PlayerIdleState>();
     }
 
@@ -48,6 +48,7 @@ public class GameViewSystem : MonoBehaviour, IAspect
         match.players[1].mode = ControlModes.Computer;
 
         foreach (var p in match.players)
+        {
             for (var i = 0; i < Player.MaxDeck; i++)
             {
                 var card = new Minion
@@ -59,5 +60,10 @@ public class GameViewSystem : MonoBehaviour, IAspect
                 card.attack = card.cost - card.hitPoints;
                 p[Zones.Deck].Add(card);
             }
+
+            var hero = new Hero();
+            hero.hitPoints = hero.maxHitPoints = 30;
+            p.hero.Add(hero);
+        }
     }
 }
