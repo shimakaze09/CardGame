@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using TheLiquidFire.AspectContainer;
 using UnityEngine;
+using TheLiquidFire.AspectContainer;
 
 public static class GameFactory
 {
     public static Container Create()
     {
-        Container game = new();
+        var game = new Container();
 
         // Add Systems
         game.AddAspect<ActionSystem>();

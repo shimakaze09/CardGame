@@ -27,11 +27,14 @@ public class ChangeTurnView : MonoBehaviour
     private bool CanChangeTurn()
     {
         var stateMachine = game.GetAspect<StateMachine>();
-        if (stateMachine.currentState is not PlayerIdleState)
+        if (!(stateMachine.currentState is PlayerIdleState))
             return false;
 
         var player = game.GetMatch().CurrentPlayer;
-        return player.mode == ControlModes.Local;
+        if (player.mode != ControlModes.Local)
+            return false;
+
+        return true;
     }
 
     private void Awake()

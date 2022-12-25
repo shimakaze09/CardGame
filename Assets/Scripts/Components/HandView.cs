@@ -1,25 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TheLiquidFire.Animation;
 using UnityEngine;
+using TheLiquidFire.Animation;
+using TheLiquidFire.Pooling;
 
 public class HandView : MonoBehaviour
 {
-    public Transform activeHandle;
     public List<Transform> cards = new();
+    public Transform activeHandle;
     public Transform inactiveHandle;
 
-    public IEnumerator AddCard(Transform card, bool showPreview)
+    public IEnumerator AddCard(Transform card, bool showPreview, bool overDraw)
     {
         if (showPreview)
         {
             var preview = ShowPreview(card);
-            while (preview.MoveNext()) yield return null;
+            while (preview.MoveNext())
+                yield return null;
         }
 
-        cards.Add(card);
-        var layout = LayoutCards();
-        while (layout.MoveNext()) yield return null;
+        if (overDraw)
+        {
+            var discard = OverdrawCard(card);
+            while (discard.MoveNext())
+                yield return null;
+        }
+        else
+        {
+            cards.Add(card);
+            var layout = LayoutCards();
+            while (layout.MoveNext())
+                yield return null;
+        }
     }
 
     private IEnumerator ShowPreview(Transform card)
@@ -41,18 +53,19 @@ public class HandView : MonoBehaviour
         }
 
         tweener = card.Wait(1);
-        while (tweener != null) yield return null;
+        while (tweener != null)
+            yield return null;
     }
 
     private IEnumerator LayoutCards(bool animated = true)
     {
-        const float overlap = 0.2f;
+        var overlap = 0.2f;
         var width = cards.Count * overlap;
         var xPos = -(width / 2f);
         var duration = animated ? 0.25f : 0;
 
         Tweener tweener = null;
-        for (var i = 0; i < cards.Count; i++)
+        for (var i = 0; i < cards.Count; ++i)
         {
             var canvas = cards[i].GetComponentInChildren<Canvas>();
             canvas.sortingOrder = i;
@@ -63,6 +76,21 @@ public class HandView : MonoBehaviour
             xPos += overlap;
         }
 
-        while (tweener != null) yield return null;
+        while (tweener != null)
+            yield return null;
+    }
+
+    private IEnumerator OverdrawCard(Transform card)
+    {
+        var tweener = card.ScaleTo(Vector3.zero, 0.5f, EasingEquations.EaseInBack);
+        while (tweener != null)
+            yield return null;
+
+        card.gameObject.SetActive(false);
+        card.localScale = Vector3.one;
+
+        var poolable = card.GetComponent<Poolable>();
+        var pooler = GetComponentInParent<BoardView>().cardPooler;
+        pooler.Enqueue(poolable);
     }
 }

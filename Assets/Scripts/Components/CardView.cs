@@ -28,7 +28,7 @@ public class CardView : MonoBehaviour
             titleText.gameObject,
             cardText.gameObject
         };
-        faceDownElements = new[]
+        faceDownElements = new GameObject[]
         {
             cardBack.gameObject
         };
@@ -47,12 +47,14 @@ public class CardView : MonoBehaviour
 
     private void Toggle(GameObject[] elements, bool isActive)
     {
-        foreach (var element in elements) element.SetActive(isActive);
+        foreach (var element in elements)
+            element.SetActive(isActive);
     }
 
     private void Refresh()
     {
-        if (isFaceUp == false) return;
+        if (isFaceUp == false)
+            return;
 
         manaText.text = card.cost.ToString();
         titleText.text = card.name;

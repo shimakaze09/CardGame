@@ -1,20 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using TheLiquidFire.Notifications;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Extensions;
-using TheLiquidFire.Notifications;
-using UnityEngine;
 
 public class DrawCardsView : MonoBehaviour
 {
     private void OnEnable()
     {
         this.AddObserver(OnPrepareDrawCards, Global.PrepareNotification<DrawCardsAction>());
+        this.AddObserver(OnPrepareDrawCards, Global.PrepareNotification<OverdrawAction>());
     }
 
     private void OnDisable()
     {
         this.RemoveObserver(OnPrepareDrawCards, Global.PrepareNotification<DrawCardsAction>());
+        this.RemoveObserver(OnPrepareDrawCards, Global.PrepareNotification<OverdrawAction>());
     }
 
     private void OnPrepareDrawCards(object sender, object args)
@@ -30,7 +32,7 @@ public class DrawCardsView : MonoBehaviour
         var boardView = GetComponent<BoardView>();
         var playerView = boardView.playerViews[drawAction.player.index];
 
-        for (var i = 0; i < drawAction.cards.Count; i++)
+        for (var i = 0; i < drawAction.cards.Count; ++i)
         {
             var deckSize = action.player[Zones.Deck].Count + drawAction.cards.Count - (i + 1);
             playerView.deck.ShowDeckSize((float)deckSize / (float)Player.MaxDeck);
@@ -43,8 +45,10 @@ public class DrawCardsView : MonoBehaviour
             cardView.gameObject.SetActive(true);
 
             var showPreview = action.player.mode == ControlModes.Local;
-            var addCard = playerView.hand.AddCard(cardView.transform, showPreview);
-            while (addCard.MoveNext()) yield return null;
+            var overDraw = action is OverdrawAction;
+            var addCard = playerView.hand.AddCard(cardView.transform, showPreview, overDraw);
+            while (addCard.MoveNext())
+                yield return null;
         }
     }
 }
