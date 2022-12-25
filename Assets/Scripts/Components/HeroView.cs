@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class HeroView : MonoBehaviour
 {
     public Sprite active;
-    public Text armor;
-    public Text attack;
+    public TextMeshProUGUI armor;
+    public TextMeshProUGUI attack;
     public Image avatar;
-    public Text health;
+    public TextMeshProUGUI health;
     public Sprite inactive;
 }

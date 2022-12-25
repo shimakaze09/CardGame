@@ -46,5 +46,18 @@ public class GameViewSystem : MonoBehaviour, IAspect
         var match = container.GetMatch();
         match.players[0].mode = ControlModes.Local;
         match.players[1].mode = ControlModes.Computer;
+
+        foreach (var p in match.players)
+            for (var i = 0; i < Player.MaxDeck; i++)
+            {
+                var card = new Minion
+                {
+                    name = "Card" + i,
+                    cost = Random.Range(1, 10)
+                };
+                card.maxHitPoints = card.hitPoints = Random.Range(1, card.cost);
+                card.attack = card.cost - card.hitPoints;
+                p[Zones.Deck].Add(card);
+            }
     }
 }
