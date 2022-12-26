@@ -13,6 +13,7 @@ public class PlayerSystem : Aspect, IObserve
         this.AddObserver(OnPerformDrawCards, Global.PerformNotification<DrawCardsAction>(), container);
         this.AddObserver(OnPerformFatigue, Global.PerformNotification<FatigueAction>(), container);
         this.AddObserver(OnPerformOverDraw, Global.PerformNotification<OverdrawAction>(), container);
+        this.AddObserver(OnPerformPlayCard, Global.PerformNotification<PlayCardAction>(), container);
     }
 
     public void Destroy()
@@ -21,6 +22,7 @@ public class PlayerSystem : Aspect, IObserve
         this.RemoveObserver(OnPerformDrawCards, Global.PerformNotification<DrawCardsAction>(), container);
         this.RemoveObserver(OnPerformFatigue, Global.PerformNotification<FatigueAction>(), container);
         this.RemoveObserver(OnPerformOverDraw, Global.PerformNotification<OverdrawAction>(), container);
+        this.RemoveObserver(OnPerformPlayCard, Global.PerformNotification<PlayCardAction>(), container);
     }
 
     private void OnPerformChangeTurn(object sender, object args)
@@ -53,7 +55,7 @@ public class PlayerSystem : Aspect, IObserve
 
         var drawCount = action.amount - fatigueCount - overDraw;
         action.cards = action.player[Zones.Deck].Draw(drawCount);
-        action.player[Zones.Hand].AddRange(action.cards);
+        foreach (var card in action.cards) ChangeZone(card, Zones.Hand);
     }
 
     private void OnPerformFatigue(object sender, object args)
@@ -69,12 +71,28 @@ public class PlayerSystem : Aspect, IObserve
     {
         var action = args as OverdrawAction;
         action.cards = action.player[Zones.Deck].Draw(action.amount);
-        action.player[Zones.Graveyard].AddRange(action.cards);
+        foreach (var card in action.cards) ChangeZone(card, Zones.Graveyard);
+    }
+
+    private void OnPerformPlayCard(object sender, object args)
+    {
+        var action = args as PlayCardAction;
+        ChangeZone(action.card, Zones.Graveyard);
     }
 
     private void DrawCards(Player player, int amount)
     {
         var action = new DrawCardsAction(player, amount);
         container.AddReaction(action);
+    }
+
+    private void ChangeZone(Card card, Zones zone, Player toPlayer = null)
+    {
+        var fromPlayer = container.GetMatch().players[card.ownerIndex];
+        toPlayer ??= fromPlayer;
+        fromPlayer[card.zone].Remove(card);
+        toPlayer[zone].Add(card);
+        card.zone = zone;
+        card.ownerIndex = toPlayer.index;
     }
 }

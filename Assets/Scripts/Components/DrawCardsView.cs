@@ -38,6 +38,7 @@ public class DrawCardsView : MonoBehaviour
             playerView.deck.ShowDeckSize((float)deckSize / (float)Player.MaxDeck);
 
             var cardView = boardView.cardPooler.Dequeue().GetComponent<CardView>();
+            cardView.Flip(false);
             cardView.card = drawAction.cards[i];
             cardView.transform.ResetParent(playerView.hand.transform);
             cardView.transform.position = playerView.deck.topCard.position;

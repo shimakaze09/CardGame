@@ -114,6 +114,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4148221739546512}
   - component: {fileID: 114438803544365448}
+  - component: {fileID: 7792664602613069766}
   m_Layer: 0
   m_Name: Hero View
   m_TagString: Untagged
@@ -155,6 +156,18 @@ MonoBehaviour:
   avatar: {fileID: 114618861246375886}
   health: {fileID: 2750301119798563931}
   inactive: {fileID: 21300000, guid: b6a58be71935e4f0c96b3ff8167e9550, type: 3}
+--- !u!114 &7792664602613069766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237365622970678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dee33b77f6d0ed5478615b3a4fa5e03d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1922647078321110
 GameObject:
   m_ObjectHideFlags: 0

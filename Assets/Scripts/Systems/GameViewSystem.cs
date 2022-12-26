@@ -58,6 +58,7 @@ public class GameViewSystem : MonoBehaviour, IAspect
                 };
                 card.maxHitPoints = card.hitPoints = Random.Range(1, card.cost);
                 card.attack = card.cost - card.hitPoints;
+                card.ownerIndex = p.index;
                 p[Zones.Deck].Add(card);
             }
 

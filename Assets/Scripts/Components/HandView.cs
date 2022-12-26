@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TheLiquidFire.Animation;
 using TheLiquidFire.Pooling;
+using TheLiquidFire.Notifications;
+using TheLiquidFire.AspectContainer;
 
 public class HandView : MonoBehaviour
 {
@@ -10,12 +13,26 @@ public class HandView : MonoBehaviour
     public Transform activeHandle;
     public Transform inactiveHandle;
 
+    private void OnEnable()
+    {
+        this.AddObserver(OnPreparePlayCard, Global.PrepareNotification<PlayCardAction>());
+    }
+
+    private void OnDisable()
+    {
+        this.RemoveObserver(OnPreparePlayCard, Global.PrepareNotification<PlayCardAction>());
+    }
+
     public IEnumerator AddCard(Transform card, bool showPreview, bool overDraw)
     {
         if (showPreview)
         {
             var preview = ShowPreview(card);
             while (preview.MoveNext())
+                yield return null;
+
+            var tweener = card.Wait(1);
+            while (tweener != null)
                 yield return null;
         }
 
@@ -34,9 +51,9 @@ public class HandView : MonoBehaviour
         }
     }
 
-    private IEnumerator ShowPreview(Transform card)
+    public IEnumerator ShowPreview(Transform card)
     {
-        Tweener tweener = null;
+        Tweener tweener;
         card.RotateTo(activeHandle.rotation);
         tweener = card.MoveTo(activeHandle.position, Tweener.DefaultDuration, EasingEquations.EaseOutBack);
         var cardView = card.GetComponent<CardView>();
@@ -51,15 +68,11 @@ public class HandView : MonoBehaviour
 
             yield return null;
         }
-
-        tweener = card.Wait(1);
-        while (tweener != null)
-            yield return null;
     }
 
-    private IEnumerator LayoutCards(bool animated = true)
+    public IEnumerator LayoutCards(bool animated = true)
     {
-        var overlap = 0.2f;
+        const float overlap = 0.4f;
         var width = cards.Count * overlap;
         var xPos = -(width / 2f);
         var duration = animated ? 0.25f : 0;
@@ -92,5 +105,24 @@ public class HandView : MonoBehaviour
         var poolable = card.GetComponent<Poolable>();
         var pooler = GetComponentInParent<BoardView>().cardPooler;
         pooler.Enqueue(poolable);
+    }
+
+    private void OnPreparePlayCard(object sender, object args)
+    {
+        var action = args as PlayCardAction;
+        if (GetComponentInParent<PlayerView>().player.index == action.card.ownerIndex)
+            action.perform.viewer = PlayCardViewer;
+    }
+
+    private IEnumerator PlayCardViewer(IContainer game, GameAction action)
+    {
+        var playAction = action as PlayCardAction;
+        var cardView = cards.Select(t => t.GetComponent<CardView>()).FirstOrDefault(cv => cv.card == playAction.card);
+
+        cards.Remove(cardView.transform);
+        StartCoroutine(LayoutCards(true));
+        var discard = OverdrawCard(cardView.transform);
+        while (discard.MoveNext())
+            yield return null;
     }
 }

@@ -1143,11 +1143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9b866790cd8645b98623964d8bd18e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 1050504981477394, guid: 0e1f550327ab14b68ae21e691c4344cd, type: 3}
   deck: {fileID: 1028911708}
   hand: {fileID: 971144630}
-  hero: {fileID: 1703574968}
   table: {fileID: 934483582}
+  hero: {fileID: 1703574968}
+  cardPrefab: {fileID: 1050504981477394, guid: 0e1f550327ab14b68ae21e691c4344cd, type: 3}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2279,6 +2279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1219006488}
   - component: {fileID: 1219006489}
+  - component: {fileID: 1219006490}
   m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
@@ -2314,6 +2315,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 50, y: 0.1, z: 50}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1219006490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219006487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dee33b77f6d0ed5478615b3a4fa5e03d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1237411199
 GameObject:
   m_ObjectHideFlags: 0
@@ -2893,6 +2906,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2014134838}
   - component: {fileID: 2014134839}
+  - component: {fileID: 2014134840}
   m_Layer: 0
   m_Name: Ally Player View
   m_TagString: Untagged
@@ -2931,11 +2945,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9b866790cd8645b98623964d8bd18e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 1050504981477394, guid: 0e1f550327ab14b68ae21e691c4344cd, type: 3}
   deck: {fileID: 512555012}
   hand: {fileID: 267249350}
-  hero: {fileID: 720922448}
   table: {fileID: 710154267}
+  hero: {fileID: 720922448}
+  cardPrefab: {fileID: 1050504981477394, guid: 0e1f550327ab14b68ae21e691c4344cd, type: 3}
+--- !u!114 &2014134840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014134837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c8ef5e4cedc4845820f859bba6f740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2034205825
 PrefabInstance:
   m_ObjectHideFlags: 0
