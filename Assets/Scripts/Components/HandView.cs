@@ -15,12 +15,12 @@ public class HandView : MonoBehaviour
 
     private void OnEnable()
     {
-        this.AddObserver(OnPreparePlayCard, Global.PrepareNotification<PlayCardAction>());
+        this.AddObserver(OnValidatePlayCard, Global.PrepareNotification<PlayCardAction>());
     }
 
     private void OnDisable()
     {
-        this.RemoveObserver(OnPreparePlayCard, Global.PrepareNotification<PlayCardAction>());
+        this.RemoveObserver(OnValidatePlayCard, Global.PrepareNotification<PlayCardAction>());
     }
 
     public IEnumerator AddCard(Transform card, bool showPreview, bool overDraw)
@@ -118,11 +118,14 @@ public class HandView : MonoBehaviour
         Dismiss(card.GetComponent<CardView>());
     }
 
-    private void OnPreparePlayCard(object sender, object args)
+    private void OnValidatePlayCard(object sender, object args)
     {
         var action = args as PlayCardAction;
         if (GetComponentInParent<PlayerView>().player.index == action.card.ownerIndex)
+        {
             action.perform.viewer = PlayCardViewer;
+            action.cancel.viewer = CancelPlayCardViewer;
+        }
     }
 
     private IEnumerator PlayCardViewer(IContainer game, GameAction action)
@@ -137,5 +140,11 @@ public class HandView : MonoBehaviour
         var discard = OverdrawCard(cardView.transform);
         while (discard.MoveNext())
             yield return null;
+    }
+
+    private IEnumerator CancelPlayCardViewer(IContainer game, GameAction action)
+    {
+        var layout = LayoutCards();
+        while (layout.MoveNext()) yield return null;
     }
 }

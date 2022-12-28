@@ -61,6 +61,9 @@ public class ActionSystem : Aspect
     {
         this.PostNotification(beginSequenceNotification, action);
 
+        if (action.Validate() == false)
+            action.Cancel();
+
         var phase = MainPhase(action.prepare);
         while (phase.MoveNext()) yield return null;
 
@@ -70,7 +73,7 @@ public class ActionSystem : Aspect
         if (_rootAction == action)
         {
             phase = EventPhase(deathReaperNotification, action, true);
-            while (phase.MoveNext()) yield return null;
+            while (phase.MoveNext()) yield return true;
         }
 
         this.PostNotification(endSequenceNotification, action);
@@ -78,7 +81,9 @@ public class ActionSystem : Aspect
 
     private IEnumerator MainPhase(Phase phase)
     {
-        if (phase.owner.isCanceled)
+        var isActionCanceled = phase.owner.isCanceled;
+        var isCancelPhase = phase.owner.cancel == phase;
+        if (isActionCanceled ^ isCancelPhase)
             yield break;
 
         var reactions = _openReactions = new List<GameAction>();

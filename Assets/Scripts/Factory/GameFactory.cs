@@ -15,6 +15,7 @@ public static class GameFactory
         game.AddAspect<DataSystem>();
         game.AddAspect<DestructableSystem>();
         game.AddAspect<MatchSystem>();
+        game.AddAspect<ManaSystem>();
         game.AddAspect<MinionSystem>();
         game.AddAspect<PlayerSystem>();
         game.AddAspect<VictorySystem>();

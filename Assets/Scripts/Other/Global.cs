@@ -34,4 +34,24 @@ public static class Global
     {
         return $"{type.Name}.PerformNotification";
     }
+
+    public static string ValidateNotification<T>()
+    {
+        return ValidateNotification(typeof(T));
+    }
+
+    public static string ValidateNotification(System.Type type)
+    {
+        return $"{type.Name}.ValidateNotification";
+    }
+
+    public static string CancelNotification<T>()
+    {
+        return CancelNotification(typeof(T));
+    }
+
+    public static string CancelNotification(System.Type type)
+    {
+        return $"{type.Name}.CancelNotification";
+    }
 }
