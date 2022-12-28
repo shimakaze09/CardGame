@@ -2251,6 +2251,7 @@ MonoBehaviour:
   - {fileID: 2014134839}
   - {fileID: 359363379}
   cardPooler: {fileID: 1893077639}
+  minionPooler: {fileID: 1633409136}
 --- !u!114 &1119274437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2620,7 +2621,7 @@ MonoBehaviour:
   key: 
   prefab: {fileID: 1793322241184360, guid: ea8dae6c7dcd24cca80a7f1ec984aaf1, type: 3}
   prepopulate: 0
-  maxCount: 14
+  maxCount: 2147483647
   autoRegister: 1
   autoClear: 1
 --- !u!1 &1690653512

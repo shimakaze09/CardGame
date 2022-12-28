@@ -77,7 +77,8 @@ public class PlayerSystem : Aspect, IObserve
     private void OnPerformPlayCard(object sender, object args)
     {
         var action = args as PlayCardAction;
-        ChangeZone(action.card, Zones.Graveyard);
+        if (action.card.zone == Zones.Hand)
+            ChangeZone(action.card, Zones.Graveyard);
     }
 
     private void DrawCards(Player player, int amount)
@@ -88,11 +89,7 @@ public class PlayerSystem : Aspect, IObserve
 
     private void ChangeZone(Card card, Zones zone, Player toPlayer = null)
     {
-        var fromPlayer = container.GetMatch().players[card.ownerIndex];
-        toPlayer ??= fromPlayer;
-        fromPlayer[card.zone].Remove(card);
-        toPlayer[zone].Add(card);
-        card.zone = zone;
-        card.ownerIndex = toPlayer.index;
+        var cardSystem = container.GetAspect<CardSystem>();
+        cardSystem.ChangeZone(card, zone, toPlayer);
     }
 }

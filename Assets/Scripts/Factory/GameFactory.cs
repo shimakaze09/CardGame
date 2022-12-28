@@ -11,9 +11,11 @@ public static class GameFactory
 
         // Add Systems
         game.AddAspect<ActionSystem>();
+        game.AddAspect<CardSystem>();
         game.AddAspect<DataSystem>();
         game.AddAspect<DestructableSystem>();
         game.AddAspect<MatchSystem>();
+        game.AddAspect<MinionSystem>();
         game.AddAspect<PlayerSystem>();
         game.AddAspect<VictorySystem>();
 

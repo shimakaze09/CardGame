@@ -10,4 +10,21 @@ public class MinionView : MonoBehaviour
     public Text health;
     public Sprite inactive;
     public Sprite inactiveTaunt;
+
+    public Minion minion { get; private set; }
+
+    public void Display(Minion minion)
+    {
+        this.minion = minion;
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        if (minion == null)
+            return;
+        avatar.sprite = inactive;
+        attack.text = minion.attack.ToString();
+        health.text = minion.hitPoints.ToString();
+    }
 }

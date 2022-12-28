@@ -93,18 +93,29 @@ public class HandView : MonoBehaviour
             yield return null;
     }
 
+    public CardView GetView(Card card)
+    {
+        return cards.Select(t => t.GetComponent<CardView>()).FirstOrDefault(cardView => cardView.card == card);
+    }
+
+    public void Dismiss(CardView card)
+    {
+        cards.Remove(card.transform);
+
+        card.gameObject.SetActive(false);
+        card.transform.localScale = Vector3.one;
+
+        var poolable = card.GetComponent<Poolable>();
+        var pooler = GetComponentInParent<BoardView>().cardPooler;
+        pooler.Enqueue(poolable);
+    }
+
     private IEnumerator OverdrawCard(Transform card)
     {
         var tweener = card.ScaleTo(Vector3.zero, 0.5f, EasingEquations.EaseInBack);
         while (tweener != null)
             yield return null;
-
-        card.gameObject.SetActive(false);
-        card.localScale = Vector3.one;
-
-        var poolable = card.GetComponent<Poolable>();
-        var pooler = GetComponentInParent<BoardView>().cardPooler;
-        pooler.Enqueue(poolable);
+        Dismiss(card.GetComponent<CardView>());
     }
 
     private void OnPreparePlayCard(object sender, object args)
@@ -117,10 +128,12 @@ public class HandView : MonoBehaviour
     private IEnumerator PlayCardViewer(IContainer game, GameAction action)
     {
         var playAction = action as PlayCardAction;
-        var cardView = cards.Select(t => t.GetComponent<CardView>()).FirstOrDefault(cv => cv.card == playAction.card);
+        var cardView = GetView(playAction.card);
+        if (cardView == null)
+            yield break;
 
         cards.Remove(cardView.transform);
-        StartCoroutine(LayoutCards(true));
+        StartCoroutine(LayoutCards());
         var discard = OverdrawCard(cardView.transform);
         while (discard.MoveNext())
             yield return null;
