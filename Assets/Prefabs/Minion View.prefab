@@ -227,18 +227,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793322241184360}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0f354c84db2c40ec8fe73fdd26c9468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avatar: {fileID: 114752237934260068}
+  active: {fileID: 21300000, guid: b88e682b7f4634ec3a288ab8f5ced63e, type: 3}
+  activeTaunt: {fileID: 21300000, guid: 2fbc4417a34b047f48b4802abcef3efe, type: 3}
   attack: {fileID: 114826000697165652}
+  avatar: {fileID: 114752237934260068}
   health: {fileID: 114611628658445412}
   inactive: {fileID: 21300000, guid: 306f95c48120c462bbdda170409ad9ee, type: 3}
-  active: {fileID: 21300000, guid: b88e682b7f4634ec3a288ab8f5ced63e, type: 3}
   inactiveTaunt: {fileID: 21300000, guid: e6041fccace894bc2bfbd518bca7831d, type: 3}
-  activeTaunt: {fileID: 21300000, guid: 2fbc4417a34b047f48b4802abcef3efe, type: 3}
 --- !u!1 &1834406696516480
 GameObject:
   m_ObjectHideFlags: 0
