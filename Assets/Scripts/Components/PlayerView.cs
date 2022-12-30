@@ -15,4 +15,14 @@ public class PlayerView : MonoBehaviour
         var heroCard = player.hero[0] as Hero;
         hero.SetHero(heroCard);
     }
+
+    public GameObject GetMatch(Card card)
+    {
+        return card.zone switch
+        {
+            Zones.Battlefield => table.GetMatch(card),
+            Zones.Hero => hero.gameObject,
+            _ => null
+        };
+    }
 }

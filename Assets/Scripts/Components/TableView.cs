@@ -70,4 +70,12 @@ public class TableView : MonoBehaviour
 
         return tweener;
     }
+
+    public GameObject GetMatch(Card card)
+    {
+        for (var i = minions.Count - 1; i >= 0; i--)
+            if (minions[i].minion == card)
+                return minions[i].gameObject;
+        return null;
+    }
 }
