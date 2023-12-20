@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using UnityEngine;
+using System;
+using System.Collections;
 
 namespace TheLiquidFire.Extensions
 {
@@ -17,7 +19,7 @@ namespace TheLiquidFire.Extensions
 
         public static T Last<T>(this T[] array)
         {
-            return array[^1];
+            return array[array.Length - 1];
         }
 
         public static bool Matches<T>(this T[] array1, T[] array2)
@@ -27,7 +29,11 @@ namespace TheLiquidFire.Extensions
             if (array1.Length != array2.Length)
                 return false;
 
-            return !array1.Where((t, i) => !t.Equals(array2[i])).Any();
+            for (var i = 0; i < array1.Length; ++i)
+                if (!array1[i].Equals(array2[i]))
+                    return false;
+
+            return true;
         }
     }
 }

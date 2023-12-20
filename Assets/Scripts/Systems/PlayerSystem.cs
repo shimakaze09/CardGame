@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TheLiquidFire.AspectContainer;
@@ -45,7 +45,7 @@ public class PlayerSystem : Aspect, IObserve
             container.AddReaction(fatigueAction);
         }
 
-        var roomInHand = Player.MaxHand - action.player[Zones.Hand].Count;
+        var roomInHand = Player.maxHand - action.player[Zones.Hand].Count;
         var overDraw = Mathf.Max(action.amount - fatigueCount - roomInHand, 0);
         if (overDraw > 0)
         {
@@ -55,13 +55,15 @@ public class PlayerSystem : Aspect, IObserve
 
         var drawCount = action.amount - fatigueCount - overDraw;
         action.cards = action.player[Zones.Deck].Draw(drawCount);
-        foreach (var card in action.cards) ChangeZone(card, Zones.Hand);
+        foreach (var card in action.cards)
+            ChangeZone(card, Zones.Hand);
     }
 
     private void OnPerformFatigue(object sender, object args)
     {
         var action = args as FatigueAction;
         action.player.fatigue++;
+
         var damageTarget = action.player.hero[0] as IDestructable;
         var damageAction = new DamageAction(damageTarget, action.player.fatigue);
         container.AddReaction(damageAction);
@@ -71,7 +73,8 @@ public class PlayerSystem : Aspect, IObserve
     {
         var action = args as OverdrawAction;
         action.cards = action.player[Zones.Deck].Draw(action.amount);
-        foreach (var card in action.cards) ChangeZone(card, Zones.Graveyard);
+        foreach (var card in action.cards)
+            ChangeZone(card, Zones.Graveyard);
     }
 
     private void OnPerformPlayCard(object sender, object args)

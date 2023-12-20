@@ -1,4 +1,6 @@
-﻿using TheLiquidFire.DataTypes;
+﻿using UnityEngine;
+using System.Collections;
+using TheLiquidFire.DataTypes;
 
 namespace TheLiquidFire.UI
 {

@@ -1,7 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using TheLiquidFire.AspectContainer;
 using UnityEngine;
+using TheLiquidFire.AspectContainer;
 
 public interface IAwake
 {
@@ -15,7 +15,8 @@ public static class AwakeExtensions
         foreach (var aspect in container.Aspects())
         {
             var item = aspect as IAwake;
-            item?.Awake();
+            if (item != null)
+                item.Awake();
         }
     }
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +9,8 @@ public class DamageAction : GameAction
 
     public DamageAction(IDestructable target, int amount)
     {
-        targets = new List<IDestructable>(1) { target };
+        targets = new List<IDestructable>(1);
+        targets.Add(target);
         this.amount = amount;
     }
 

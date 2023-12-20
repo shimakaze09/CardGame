@@ -1,8 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using UnityEngine;
 
 public class PlayerIdleState : BaseState
 {
@@ -12,18 +12,14 @@ public class PlayerIdleState : BaseState
     public override void Enter()
     {
         container.GetAspect<AttackSystem>().Refresh();
-        Temp_AutoChangeTurnForAI();
+        container.GetAspect<CardSystem>().Refresh();
+        if (container.GetMatch().CurrentPlayer.mode == ControlModes.Computer)
+            container.GetAspect<EnemySystem>().TakeTurn();
         this.PostNotification(EnterNotification);
     }
 
     public override void Exit()
     {
         this.PostNotification(ExitNotification);
-    }
-
-    private void Temp_AutoChangeTurnForAI()
-    {
-        if (container.GetMatch().CurrentPlayer.mode != ControlModes.Local)
-            container.GetAspect<MatchSystem>().ChangeTurn();
     }
 }

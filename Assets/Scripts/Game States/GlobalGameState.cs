@@ -1,8 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using UnityEngine;
 
 public class GlobalGameState : Aspect, IObserve
 {

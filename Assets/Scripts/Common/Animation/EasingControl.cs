@@ -1,6 +1,6 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Collections;
-using UnityEngine;
 
 namespace TheLiquidFire.Animation
 {
@@ -22,7 +22,7 @@ namespace TheLiquidFire.Animation
             Normal,
             Real,
             Fixed
-        }
+        };
 
         public enum PlayState
         {
@@ -30,19 +30,19 @@ namespace TheLiquidFire.Animation
             Paused,
             Playing,
             Reversing
-        }
+        };
 
         public enum EndBehaviour
         {
             Constant,
             Reset
-        }
+        };
 
         public enum LoopType
         {
             Repeat,
             PingPong
-        }
+        };
 
         #endregion
 

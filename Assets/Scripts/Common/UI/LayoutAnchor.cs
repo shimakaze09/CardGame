@@ -1,50 +1,12 @@
-﻿using TheLiquidFire.Animation;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using TheLiquidFire.Animation;
 
 namespace TheLiquidFire.UI
 {
     [RequireComponent(typeof(RectTransform))]
     public class LayoutAnchor : MonoBehaviour
     {
-        #region Private
-
-        private Vector2 GetPosition(RectTransform rt, TextAnchor anchor)
-        {
-            var retValue = Vector2.zero;
-
-            switch (anchor)
-            {
-                case TextAnchor.LowerCenter:
-                case TextAnchor.MiddleCenter:
-                case TextAnchor.UpperCenter:
-                    retValue.x += rt.rect.width * 0.5f;
-                    break;
-                case TextAnchor.LowerRight:
-                case TextAnchor.MiddleRight:
-                case TextAnchor.UpperRight:
-                    retValue.x += rt.rect.width;
-                    break;
-            }
-
-            switch (anchor)
-            {
-                case TextAnchor.MiddleLeft:
-                case TextAnchor.MiddleCenter:
-                case TextAnchor.MiddleRight:
-                    retValue.y += rt.rect.height * 0.5f;
-                    break;
-                case TextAnchor.UpperLeft:
-                case TextAnchor.UpperCenter:
-                case TextAnchor.UpperRight:
-                    retValue.y += rt.rect.height;
-                    break;
-            }
-
-            return retValue;
-        }
-
-        #endregion
-
         #region Fields / Properties
 
         private RectTransform myRT;
@@ -92,6 +54,45 @@ namespace TheLiquidFire.UI
             pos.x = Mathf.RoundToInt(pos.x);
             pos.y = Mathf.RoundToInt(pos.y);
             return pos;
+        }
+
+        #endregion
+
+        #region Private
+
+        private Vector2 GetPosition(RectTransform rt, TextAnchor anchor)
+        {
+            var retValue = Vector2.zero;
+
+            switch (anchor)
+            {
+                case TextAnchor.LowerCenter:
+                case TextAnchor.MiddleCenter:
+                case TextAnchor.UpperCenter:
+                    retValue.x += rt.rect.width * 0.5f;
+                    break;
+                case TextAnchor.LowerRight:
+                case TextAnchor.MiddleRight:
+                case TextAnchor.UpperRight:
+                    retValue.x += rt.rect.width;
+                    break;
+            }
+
+            switch (anchor)
+            {
+                case TextAnchor.MiddleLeft:
+                case TextAnchor.MiddleCenter:
+                case TextAnchor.MiddleRight:
+                    retValue.y += rt.rect.height * 0.5f;
+                    break;
+                case TextAnchor.UpperLeft:
+                case TextAnchor.UpperCenter:
+                case TextAnchor.UpperRight:
+                    retValue.y += rt.rect.height;
+                    break;
+            }
+
+            return retValue;
         }
 
         #endregion

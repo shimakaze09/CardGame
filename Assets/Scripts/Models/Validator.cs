@@ -1,7 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using TheLiquidFire.Notifications;
 using UnityEngine;
+using TheLiquidFire.Notifications;
 
 public class Validator
 {

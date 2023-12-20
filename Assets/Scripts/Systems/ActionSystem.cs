@@ -1,9 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using UnityEngine;
 
 public class ActionSystem : Aspect
 {
@@ -18,10 +17,10 @@ public class ActionSystem : Aspect
 
     #region Fields & Properties
 
-    private GameAction _rootAction;
-    private IEnumerator _rootSequence;
-    private List<GameAction> _openReactions;
-    public bool IsActive => _rootSequence != null;
+    private GameAction rootAction;
+    private IEnumerator rootSequence;
+    private List<GameAction> openReactions;
+    public bool IsActive => rootSequence != null;
 
     #endregion
 
@@ -30,27 +29,28 @@ public class ActionSystem : Aspect
     public void Perform(GameAction action)
     {
         if (IsActive) return;
-        _rootAction = action;
-        _rootSequence = Sequence(action);
+        rootAction = action;
+        rootSequence = Sequence(action);
     }
 
     public void Update()
     {
-        if (_rootSequence == null)
+        if (rootSequence == null)
             return;
 
-        if (_rootSequence.MoveNext() == false)
+        if (rootSequence.MoveNext() == false)
         {
-            _rootAction = null;
-            _rootSequence = null;
-            _openReactions = null;
+            rootAction = null;
+            rootSequence = null;
+            openReactions = null;
             this.PostNotification(completeNotification);
         }
     }
 
     public void AddReaction(GameAction action)
     {
-        _openReactions?.Add(action);
+        if (openReactions != null)
+            openReactions.Add(action);
     }
 
     #endregion
@@ -70,10 +70,13 @@ public class ActionSystem : Aspect
         phase = MainPhase(action.perform);
         while (phase.MoveNext()) yield return null;
 
-        if (_rootAction == action)
+        phase = MainPhase(action.cancel);
+        while (phase.MoveNext()) yield return null;
+
+        if (rootAction == action)
         {
             phase = EventPhase(deathReaperNotification, action, true);
-            while (phase.MoveNext()) yield return true;
+            while (phase.MoveNext()) yield return null;
         }
 
         this.PostNotification(endSequenceNotification, action);
@@ -81,12 +84,12 @@ public class ActionSystem : Aspect
 
     private IEnumerator MainPhase(Phase phase)
     {
-        var isActionCanceled = phase.owner.isCanceled;
+        var isActionCancelled = phase.owner.isCanceled;
         var isCancelPhase = phase.owner.cancel == phase;
-        if (isActionCanceled ^ isCancelPhase)
+        if (isActionCancelled ^ isCancelPhase)
             yield break;
 
-        var reactions = _openReactions = new List<GameAction>();
+        var reactions = openReactions = new List<GameAction>();
         var flow = phase.Flow(container);
         while (flow.MoveNext()) yield return null;
 
@@ -97,9 +100,11 @@ public class ActionSystem : Aspect
     private IEnumerator ReactPhase(List<GameAction> reactions)
     {
         reactions.Sort(SortActions);
-        foreach (var subFlow in reactions.Select(Sequence))
-            while (subFlow.MoveNext())
-                yield return null;
+        foreach (var reaction in reactions)
+        {
+            var subFlow = Sequence(reaction);
+            while (subFlow.MoveNext()) yield return null;
+        }
     }
 
     private IEnumerator EventPhase(string notification, GameAction action, bool repeats = false)
@@ -107,17 +112,20 @@ public class ActionSystem : Aspect
         List<GameAction> reactions;
         do
         {
-            reactions = _openReactions = new List<GameAction>();
+            reactions = openReactions = new List<GameAction>();
             this.PostNotification(notification, action);
 
             var phase = ReactPhase(reactions);
             while (phase.MoveNext()) yield return null;
-        } while (repeats && reactions.Count > 0);
+        } while (repeats == true && reactions.Count > 0);
     }
 
     private int SortActions(GameAction x, GameAction y)
     {
-        return x.priority != y.priority ? y.priority.CompareTo(x.priority) : x.orderOfPlay.CompareTo(y.orderOfPlay);
+        if (x.priority != y.priority)
+            return y.priority.CompareTo(x.priority);
+        else
+            return x.orderOfPlay.CompareTo(y.orderOfPlay);
     }
 
     #endregion

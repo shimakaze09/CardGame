@@ -1,8 +1,13 @@
-﻿using TMPro;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TheLiquidFire.Notifications;
+using TheLiquidFire.AspectContainer;
 
 public class HeroView : BattlefieldCardView
 {
-    public TextMeshProUGUI armor;
+    public Text armor;
     public Hero hero { get; private set; }
     public override Card card => hero;
 

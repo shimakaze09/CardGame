@@ -1,15 +1,15 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using TheLiquidFire.Notifications;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TheLiquidFire.Notifications;
+using TheLiquidFire.AspectContainer;
 
 public abstract class BattlefieldCardView : MonoBehaviour
 {
     public Image avatar;
-    public TextMeshProUGUI attack;
-    public TextMeshProUGUI health;
+    public Text attack;
+    public Text health;
     public Sprite inactive;
     public Sprite active;
     protected bool isActive;

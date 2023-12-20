@@ -1,14 +1,15 @@
-﻿using TheLiquidFire.DataTypes;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using TheLiquidFire.DataTypes;
 
 namespace TheLiquidFire.UI
 {
     public class BottomToTop : IFlow
     {
-        private readonly ScrollRect ScrollRect;
-        private readonly ISpacer Spacer;
-        private readonly int ViewHeight;
+        private ScrollRect ScrollRect;
+        private ISpacer Spacer;
+        private int ViewHeight;
 
         public BottomToTop(ScrollRect scrollRect, ISpacer spacer)
         {

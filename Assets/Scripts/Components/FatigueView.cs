@@ -1,14 +1,14 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using TheLiquidFire.Animation;
+using UnityEngine;
+using UnityEngine.UI;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using TMPro;
-using UnityEngine;
+using TheLiquidFire.Animation;
 
 public class FatigueView : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI fatigueLabel;
+    [SerializeField] private Text fatigueLabel;
 
     private void OnEnable()
     {
@@ -31,12 +31,14 @@ public class FatigueView : MonoBehaviour
         yield return true;
         var fatigue = action as FatigueAction;
 
-        fatigueLabel.text = $"Fatigue\n{fatigue.player.fatigue}";
+        fatigueLabel.text = string.Format("Fatigue\n{0}", fatigue.player.fatigue);
 
         var tweener = transform.ScaleTo(Vector3.one, 0.5f, EasingEquations.EaseOutBack);
-        while (tweener != null) yield return null;
+        while (tweener != null)
+            yield return null;
 
         tweener = transform.ScaleTo(Vector3.zero, 0.5f, EasingEquations.EaseInBack);
-        while (tweener != null) yield return null;
+        while (tweener != null)
+            yield return null;
     }
 }

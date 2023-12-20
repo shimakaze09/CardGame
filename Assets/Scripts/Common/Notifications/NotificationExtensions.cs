@@ -1,4 +1,7 @@
-﻿using Handler = System.Action<object, object>;
+﻿using UnityEngine;
+using System;
+using System.Collections;
+using Handler = System.Action<object, object>;
 
 namespace TheLiquidFire.Notifications
 {
@@ -6,32 +9,32 @@ namespace TheLiquidFire.Notifications
     {
         public static void PostNotification(this object obj, string notificationName)
         {
-            NotificationCenter.Instance.PostNotification(notificationName, obj);
+            NotificationCenter.instance.PostNotification(notificationName, obj);
         }
 
         public static void PostNotification(this object obj, string notificationName, object e)
         {
-            NotificationCenter.Instance.PostNotification(notificationName, obj, e);
+            NotificationCenter.instance.PostNotification(notificationName, obj, e);
         }
 
         public static void AddObserver(this object obj, Handler handler, string notificationName)
         {
-            NotificationCenter.Instance.AddObserver(handler, notificationName);
+            NotificationCenter.instance.AddObserver(handler, notificationName);
         }
 
         public static void AddObserver(this object obj, Handler handler, string notificationName, object sender)
         {
-            NotificationCenter.Instance.AddObserver(handler, notificationName, sender);
+            NotificationCenter.instance.AddObserver(handler, notificationName, sender);
         }
 
         public static void RemoveObserver(this object obj, Handler handler, string notificationName)
         {
-            NotificationCenter.Instance.RemoveObserver(handler, notificationName);
+            NotificationCenter.instance.RemoveObserver(handler, notificationName);
         }
 
         public static void RemoveObserver(this object obj, Handler handler, string notificationName, object sender)
         {
-            NotificationCenter.Instance.RemoveObserver(handler, notificationName, sender);
+            NotificationCenter.instance.RemoveObserver(handler, notificationName, sender);
         }
     }
 }

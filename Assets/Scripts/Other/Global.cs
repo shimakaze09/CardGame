@@ -1,6 +1,5 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public static class Global
@@ -22,7 +21,7 @@ public static class Global
 
     public static string PrepareNotification(System.Type type)
     {
-        return $"{type.Name}.PrepareNotification";
+        return string.Format("{0}.PrepareNotification", type.Name);
     }
 
     public static string PerformNotification<T>()
@@ -32,7 +31,7 @@ public static class Global
 
     public static string PerformNotification(System.Type type)
     {
-        return $"{type.Name}.PerformNotification";
+        return string.Format("{0}.PerformNotification", type.Name);
     }
 
     public static string ValidateNotification<T>()
@@ -42,7 +41,7 @@ public static class Global
 
     public static string ValidateNotification(System.Type type)
     {
-        return $"{type.Name}.ValidateNotification";
+        return string.Format("{0}.ValidateNotification", type.Name);
     }
 
     public static string CancelNotification<T>()
@@ -52,6 +51,6 @@ public static class Global
 
     public static string CancelNotification(System.Type type)
     {
-        return $"{type.Name}.CancelNotification";
+        return string.Format("{0}.CancelNotification", type.Name);
     }
 }

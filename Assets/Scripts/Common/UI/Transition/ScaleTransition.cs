@@ -1,24 +1,33 @@
-﻿using System;
-using System.Collections;
-using TheLiquidFire.Animation;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
+using TheLiquidFire.Animation;
 
 namespace TheLiquidFire.UI
 {
     public class ScaleTransition : BaseTransition
     {
-        public Data hideData = new()
+        [Serializable]
+        public class Data
         {
-            scale = Vector3.zero,
-            duration = 0.5f,
-            equation = EasingEquations.EaseInBack
-        };
+            public Vector3 scale;
+            public float duration;
+            public Func<float, float, float, float> equation;
+        }
 
         public Data showData = new()
         {
             scale = Vector3.one,
             duration = 0.5f,
             equation = EasingEquations.EaseOutBack
+        };
+
+        public Data hideData = new()
+        {
+            scale = Vector3.zero,
+            duration = 0.5f,
+            equation = EasingEquations.EaseInBack
         };
 
         public override void Show(Action didShow)
@@ -40,14 +49,6 @@ namespace TheLiquidFire.UI
                 yield return null;
             if (complete != null)
                 complete();
-        }
-
-        [Serializable]
-        public class Data
-        {
-            public float duration;
-            public Func<float, float, float, float> equation;
-            public Vector3 scale;
         }
     }
 }

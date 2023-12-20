@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using TheLiquidFire.Animation;
 using TheLiquidFire.Pooling;
@@ -15,12 +14,12 @@ public class HandView : MonoBehaviour
 
     private void OnEnable()
     {
-        this.AddObserver(OnValidatePlayCard, Global.PrepareNotification<PlayCardAction>());
+        this.AddObserver(OnValidatePlayCard, Global.ValidateNotification<PlayCardAction>());
     }
 
     private void OnDisable()
     {
-        this.RemoveObserver(OnValidatePlayCard, Global.PrepareNotification<PlayCardAction>());
+        this.RemoveObserver(OnValidatePlayCard, Global.ValidateNotification<PlayCardAction>());
     }
 
     public IEnumerator AddCard(Transform card, bool showPreview, bool overDraw)
@@ -53,7 +52,7 @@ public class HandView : MonoBehaviour
 
     public IEnumerator ShowPreview(Transform card)
     {
-        Tweener tweener;
+        Tweener tweener = null;
         card.RotateTo(activeHandle.rotation);
         tweener = card.MoveTo(activeHandle.position, Tweener.DefaultDuration, EasingEquations.EaseOutBack);
         var cardView = card.GetComponent<CardView>();
@@ -72,7 +71,7 @@ public class HandView : MonoBehaviour
 
     public IEnumerator LayoutCards(bool animated = true)
     {
-        const float overlap = 0.4f;
+        var overlap = 0.4f;
         var width = cards.Count * overlap;
         var xPos = -(width / 2f);
         var duration = animated ? 0.25f : 0;
@@ -95,7 +94,13 @@ public class HandView : MonoBehaviour
 
     public CardView GetView(Card card)
     {
-        return cards.Select(t => t.GetComponent<CardView>()).FirstOrDefault(cardView => cardView.card == card);
+        foreach (var t in cards)
+        {
+            var cardView = t.GetComponent<CardView>();
+            if (cardView.card == card) return cardView;
+        }
+
+        return null;
     }
 
     public void Dismiss(CardView card)
@@ -120,7 +125,7 @@ public class HandView : MonoBehaviour
 
     private void OnValidatePlayCard(object sender, object args)
     {
-        var action = args as PlayCardAction;
+        var action = sender as PlayCardAction;
         if (GetComponentInParent<PlayerView>().player.index == action.card.ownerIndex)
         {
             action.perform.viewer = PlayCardViewer;
@@ -136,7 +141,7 @@ public class HandView : MonoBehaviour
             yield break;
 
         cards.Remove(cardView.transform);
-        StartCoroutine(LayoutCards());
+        StartCoroutine(LayoutCards(true));
         var discard = OverdrawCard(cardView.transform);
         while (discard.MoveNext())
             yield return null;
@@ -144,7 +149,8 @@ public class HandView : MonoBehaviour
 
     private IEnumerator CancelPlayCardViewer(IContainer game, GameAction action)
     {
-        var layout = LayoutCards();
-        while (layout.MoveNext()) yield return null;
+        var layout = LayoutCards(true);
+        while (layout.MoveNext())
+            yield return null;
     }
 }

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerView : MonoBehaviour
 {
@@ -18,11 +20,15 @@ public class PlayerView : MonoBehaviour
 
     public GameObject GetMatch(Card card)
     {
-        return card.zone switch
+        switch (card.zone)
         {
-            Zones.Battlefield => table.GetMatch(card),
-            Zones.Hero => hero.gameObject,
-            _ => null
-        };
+            case Zones.Battlefield:
+                return table.GetMatch(card);
+            case Zones.Hero:
+                return hero.gameObject;
+            default:
+                Debug.Log("No Implementation for zone");
+                return null;
+        }
     }
 }

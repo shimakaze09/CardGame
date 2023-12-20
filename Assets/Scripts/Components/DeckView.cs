@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class DeckView : MonoBehaviour
 {
-    [SerializeField] private Transform squisher;
     public Transform topCard;
+    [SerializeField] private Transform squisher;
 
     public void ShowDeckSize(float size)
     {

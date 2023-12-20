@@ -1,21 +1,22 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace TheLiquidFire.Pooling
 {
     public class IndexedPooler : BasePooler
     {
-        #region Fields / Properties
-
-        public List<Poolable> Collection = new();
-
-        #endregion
-
         #region Events
 
         public Action<Poolable, int> willEnqueueAtIndex;
         public Action<Poolable, int> didDequeueAtIndex;
+
+        #endregion
+
+        #region Fields / Properties
+
+        public List<Poolable> Collection = new();
 
         #endregion
 

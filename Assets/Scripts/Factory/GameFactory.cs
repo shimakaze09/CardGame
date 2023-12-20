@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TheLiquidFire.AspectContainer;
@@ -15,9 +15,11 @@ public static class GameFactory
         game.AddAspect<CardSystem>();
         game.AddAspect<CombatantSystem>();
         game.AddAspect<DataSystem>();
+        game.AddAspect<DeathSystem>();
         game.AddAspect<DestructableSystem>();
-        game.AddAspect<MatchSystem>();
+        game.AddAspect<EnemySystem>();
         game.AddAspect<ManaSystem>();
+        game.AddAspect<MatchSystem>();
         game.AddAspect<MinionSystem>();
         game.AddAspect<PlayerSystem>();
         game.AddAspect<VictorySystem>();

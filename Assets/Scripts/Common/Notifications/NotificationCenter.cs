@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 /// <summary>
 /// This delegate is similar to an EventHandler:
 ///     The first parameter is the sender, 
@@ -22,18 +24,18 @@ namespace TheLiquidFire.Notifications
         #region Properties
 
         /// <summary>
-        ///     The dictionary "key" (string) represents a notificationName property to be observed
-        ///     The dictionary "value" (SenderTable) maps between sender and observer sub tables
+        /// The dictionary "key" (string) represents a notificationName property to be observed
+        /// The dictionary "value" (SenderTable) maps between sender and observer sub tables
         /// </summary>
-        private readonly Dictionary<string, SenderTable> _table = new();
+        private Dictionary<string, SenderTable> _table = new();
 
-        private readonly HashSet<List<Handler>> _invoking = new();
+        private HashSet<List<Handler>> _invoking = new();
 
         #endregion
 
         #region Singleton Pattern
 
-        public static readonly NotificationCenter Instance = new();
+        public static readonly NotificationCenter instance = new();
 
         private NotificationCenter()
         {
@@ -67,7 +69,7 @@ namespace TheLiquidFire.Notifications
 
             var subTable = _table[notificationName];
 
-            var key = sender ?? this;
+            var key = sender != null ? sender : this;
 
             if (!subTable.ContainsKey(key))
                 subTable.Add(key, new List<Handler>());
@@ -106,7 +108,7 @@ namespace TheLiquidFire.Notifications
                 return;
 
             var subTable = _table[notificationName];
-            var key = sender ?? this;
+            var key = sender != null ? sender : this;
 
             if (!subTable.ContainsKey(key))
                 return;
@@ -175,9 +177,8 @@ namespace TheLiquidFire.Notifications
             {
                 var handlers = subTable[sender];
                 _invoking.Add(handlers);
-                foreach (var handler in handlers)
-                    handler(sender, e);
-
+                for (var i = 0; i < handlers.Count; ++i)
+                    handlers[i](sender, e);
                 _invoking.Remove(handlers);
             }
 
@@ -186,9 +187,8 @@ namespace TheLiquidFire.Notifications
             {
                 var handlers = subTable[this];
                 _invoking.Add(handlers);
-                foreach (var handler in handlers)
-                    handler(sender, e);
-
+                for (var i = 0; i < handlers.Count; ++i)
+                    handlers[i](sender, e);
                 _invoking.Remove(handlers);
             }
         }

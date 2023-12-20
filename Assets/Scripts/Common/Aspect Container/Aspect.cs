@@ -1,4 +1,8 @@
-﻿namespace TheLiquidFire.AspectContainer
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace TheLiquidFire.AspectContainer
 {
     public interface IAspect
     {

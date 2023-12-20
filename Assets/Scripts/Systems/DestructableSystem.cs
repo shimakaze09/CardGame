@@ -1,8 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using UnityEngine;
 
 public class DestructableSystem : Aspect, IObserve
 {
@@ -27,8 +27,11 @@ public class DestructableSystem : Aspect, IObserve
     private void OnFilterAttackTargets(object sender, object args)
     {
         var candidates = args as List<Card>;
-        for (var i = candidates.Count - 1; i >= 0; i--)
-            if (candidates[i] is not IDestructable destructable)
+        for (var i = candidates.Count - 1; i >= 0; --i)
+        {
+            var destructable = candidates[i] as IDestructable;
+            if (destructable == null)
                 candidates.RemoveAt(i);
+        }
     }
 }

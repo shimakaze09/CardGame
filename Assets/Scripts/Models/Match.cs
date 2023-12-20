@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +15,6 @@ public class Match
 
     public Match()
     {
-        for (var i = 0; i < PlayerCount; i++) players.Add(new Player(i));
+        for (var i = 0; i < PlayerCount; ++i) players.Add(new Player(i));
     }
 }

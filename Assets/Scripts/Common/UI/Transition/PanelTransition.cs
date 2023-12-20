@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
 using TheLiquidFire.Animation;
 
 namespace TheLiquidFire.UI
 {
     public class PanelTransition : BaseTransition
     {
-        public Data hideData = new()
+        [Serializable]
+        public class Data
         {
-            position = "Hide",
-            duration = 0.5f,
-            equation = EasingEquations.EaseInBack
-        };
+            public string position;
+            public float duration;
+            public Func<float, float, float, float> equation;
+        }
 
         public Panel panel;
 
@@ -20,6 +23,13 @@ namespace TheLiquidFire.UI
             position = "Show",
             duration = 0.5f,
             equation = EasingEquations.EaseOutBack
+        };
+
+        public Data hideData = new()
+        {
+            position = "Hide",
+            duration = 0.5f,
+            equation = EasingEquations.EaseInBack
         };
 
         public override void Show(Action didShow)
@@ -43,14 +53,6 @@ namespace TheLiquidFire.UI
                 yield return null;
             if (complete != null)
                 complete();
-        }
-
-        [Serializable]
-        public class Data
-        {
-            public float duration;
-            public Func<float, float, float, float> equation;
-            public string position;
         }
     }
 }

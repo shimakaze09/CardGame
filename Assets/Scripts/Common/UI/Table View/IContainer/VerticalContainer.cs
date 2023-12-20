@@ -1,11 +1,14 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 namespace TheLiquidFire.UI
 {
     public class VerticalContainer : IContainer
     {
-        private readonly ScrollRect ScrollRect;
-        private readonly ISpacer Spacer;
+        public IFlow Flow { get; private set; }
+        private ScrollRect ScrollRect;
+        private ISpacer Spacer;
 
         public VerticalContainer(ScrollRect scrollRect, ISpacer spacer)
         {
@@ -17,8 +20,6 @@ namespace TheLiquidFire.UI
             else
                 Flow = new BottomToTop(scrollRect, spacer);
         }
-
-        public IFlow Flow { get; }
 
         public void AutoSize()
         {

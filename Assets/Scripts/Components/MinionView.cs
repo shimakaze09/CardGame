@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TheLiquidFire.AspectContainer;
+using TheLiquidFire.Notifications;
 
 public class MinionView : BattlefieldCardView
 {

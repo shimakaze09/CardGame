@@ -1,9 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using UnityEngine;
 
 public class CombatantSystem : Aspect, IObserve
 {
@@ -22,17 +21,11 @@ public class CombatantSystem : Aspect, IObserve
     private void OnFilterAttackers(object sender, object args)
     {
         var candidates = args as List<Card>;
-        for (var i = candidates.Count - 1; i >= 0; i--)
+        for (var i = candidates.Count - 1; i >= 0; --i)
         {
             var combatant = candidates[i] as ICombatant;
-            if (!CanAttack(combatant))
-                candidates.RemoveAt(i);
+            if (!CanAttack(combatant)) candidates.RemoveAt(i);
         }
-    }
-
-    private bool CanAttack(ICombatant combatant)
-    {
-        return combatant is { attack: > 0, remainingAttacks: > 0 };
     }
 
     private void OnPerformChangeTurn(object sender, object args)
@@ -40,6 +33,17 @@ public class CombatantSystem : Aspect, IObserve
         var action = args as ChangeTurnAction;
         var player = container.GetMatch().players[action.targetPlayerIndex];
         var active = container.GetAspect<AttackSystem>().GetActive(player);
-        foreach (var combatant in active.OfType<ICombatant>()) combatant.remainingAttacks = combatant.allowedAttacks;
+        foreach (var card in active)
+        {
+            var combatant = card as ICombatant;
+            if (combatant == null)
+                continue;
+            combatant.remainingAttacks = combatant.allowedAttacks;
+        }
+    }
+
+    private bool CanAttack(ICombatant combatant)
+    {
+        return combatant != null && combatant.attack > 0 && combatant.remainingAttacks > 0;
     }
 }

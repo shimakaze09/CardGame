@@ -1,15 +1,31 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using UnityEngine;
 
 public class AttackSystem : Aspect, IObserve
 {
     public const string FilterAttackersNotification = "AttackSystem.ValidateAttackerNotification";
     public const string FilterTargetsNotification = "AttackSystem.ValidateTargetNotification";
+
     public List<Card> validAttackers { get; private set; }
     public List<Card> validTargets { get; private set; }
+
+    public void Refresh()
+    {
+        var match = container.GetMatch();
+        validAttackers = GetFiltered(match.CurrentPlayer, FilterAttackersNotification);
+        validTargets = GetFiltered(match.OpponentPlayer, FilterTargetsNotification);
+    }
+
+    public List<Card> GetActive(Player player)
+    {
+        var list = new List<Card>();
+        list.Add(player[Zones.Hero][0]);
+        list.AddRange(player[Zones.Battlefield]);
+        return list;
+    }
 
     public void Awake()
     {
@@ -23,13 +39,6 @@ public class AttackSystem : Aspect, IObserve
         this.RemoveObserver(OnPerformAttackAction, Global.PerformNotification<AttackAction>(), container);
     }
 
-    public List<Card> GetActive(Player player)
-    {
-        var list = new List<Card> { player[Zones.Hero][0] };
-        list.AddRange(player[Zones.Battlefield]);
-        return list;
-    }
-
     private List<Card> GetFiltered(Player player, string filterNotificationName)
     {
         var list = GetActive(player);
@@ -37,17 +46,11 @@ public class AttackSystem : Aspect, IObserve
         return list;
     }
 
-    public void Refresh()
-    {
-        var match = container.GetMatch();
-        validAttackers = GetFiltered(match.CurrentPlayer, FilterAttackersNotification);
-        validTargets = GetFiltered(match.OpponentPlayer, FilterTargetsNotification);
-    }
-
     private void OnValidateAttackAction(object sender, object args)
     {
         var action = sender as AttackAction;
-        if (!validAttackers.Contains(action.attacker) || !validTargets.Contains(action.target))
+        if (!validAttackers.Contains(action.attacker) ||
+            !validTargets.Contains(action.target))
         {
             var validator = args as Validator;
             validator.Invalidate();
@@ -56,12 +59,29 @@ public class AttackSystem : Aspect, IObserve
 
     private void OnPerformAttackAction(object sender, object args)
     {
-        var action = sender as AttackAction;
+        var action = args as AttackAction;
         var attacker = action.attacker as ICombatant;
         attacker.remainingAttacks--;
+        ApplyAttackDamage(action);
+        ApplyCounterAttackDamage(action);
+    }
 
+    private void ApplyAttackDamage(AttackAction action)
+    {
+        var attacker = action.attacker as ICombatant;
         var target = action.target as IDestructable;
         var damageAction = new DamageAction(target, attacker.attack);
         container.AddReaction(damageAction);
+    }
+
+    private void ApplyCounterAttackDamage(AttackAction action)
+    {
+        var attacker = action.target as ICombatant;
+        var target = action.attacker as IDestructable;
+        if (attacker != null && target != null)
+        {
+            var damageAction = new DamageAction(target, attacker.attack);
+            container.AddReaction(damageAction);
+        }
     }
 }

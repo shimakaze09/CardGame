@@ -1,21 +1,13 @@
-﻿using TheLiquidFire.Animation;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
+using System.Collections;
+using TheLiquidFire.Animation;
 
 namespace TheLiquidFire.UI
 {
     [RequireComponent(typeof(Panel))]
     public class TableViewCell : MonoBehaviour
     {
-        #region MonoBehaviour
-
-        private void Awake()
-        {
-            panel = GetComponent<Panel>();
-            anchor = GetComponent<LayoutAnchor>();
-        }
-
-        #endregion
-
         #region Fields
 
         public Panel panel { get; private set; }
@@ -23,6 +15,16 @@ namespace TheLiquidFire.UI
         public Panel.Position pinPosition { get; private set; }
         public Panel.Position showPosition { get; private set; }
         public Panel.Position hidePosition { get; private set; }
+
+        #endregion
+
+        #region MonoBehaviour
+
+        private void Awake()
+        {
+            panel = GetComponent<Panel>();
+            anchor = GetComponent<LayoutAnchor>();
+        }
 
         #endregion
 

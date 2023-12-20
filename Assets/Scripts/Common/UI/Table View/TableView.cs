@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using TheLiquidFire.Animation;
-using TheLiquidFire.DataTypes;
-using TheLiquidFire.Extensions;
-using TheLiquidFire.Pooling;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TheLiquidFire.DataTypes;
+using TheLiquidFire.Pooling;
+using TheLiquidFire.Extensions;
+using TheLiquidFire.Animation;
 
 namespace TheLiquidFire.UI
 {

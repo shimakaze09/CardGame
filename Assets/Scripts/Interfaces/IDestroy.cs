@@ -1,7 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using TheLiquidFire.AspectContainer;
 using UnityEngine;
+using TheLiquidFire.AspectContainer;
 
 public interface IDestroy
 {
@@ -15,7 +15,8 @@ public static class DestroyExtensions
         foreach (var aspect in container.Aspects())
         {
             var item = aspect as IDestroy;
-            item?.Destroy();
+            if (item != null)
+                item.Destroy();
         }
     }
 }

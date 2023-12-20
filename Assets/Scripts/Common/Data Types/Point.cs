@@ -1,5 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
+using System.Collections;
 
 namespace TheLiquidFire.DataTypes
 {
@@ -56,7 +57,11 @@ namespace TheLiquidFire.DataTypes
 
         public override bool Equals(object obj)
         {
-            if (obj is Point point) return x == point.x && y == point.y;
+            if (obj is Point)
+            {
+                var p = (Point)obj;
+                return x == p.x && y == p.y;
+            }
 
             return false;
         }
@@ -73,7 +78,7 @@ namespace TheLiquidFire.DataTypes
 
         public override string ToString()
         {
-            return $"({x},{y})";
+            return string.Format("({0},{1})", x, y);
         }
 
         #endregion

@@ -1,21 +1,21 @@
-﻿using TheLiquidFire.DataTypes;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using TheLiquidFire.DataTypes;
 
 namespace TheLiquidFire.UI
 {
     public class UniformSpacer : ISpacer
     {
-        private int CellCount;
+        public int TotalSize => CellCount * CellSize;
 
-        private readonly int CellSize;
+        private int CellSize;
+        private int CellCount;
 
         public UniformSpacer(int cellSize, int cellCount)
         {
             CellSize = cellSize;
             CellCount = cellCount;
         }
-
-        public int TotalSize => CellCount * CellSize;
 
         public int GetSize(int index)
         {

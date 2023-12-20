@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace TheLiquidFire.AspectContainer
 {
@@ -12,16 +14,16 @@ namespace TheLiquidFire.AspectContainer
 
     public class Container : IContainer
     {
-        private readonly Dictionary<string, IAspect> aspects = new();
+        private Dictionary<string, IAspect> aspects = new();
 
         public T AddAspect<T>(string key = null) where T : IAspect, new()
         {
-            return AddAspect(new T(), key);
+            return AddAspect<T>(new T(), key);
         }
 
         public T AddAspect<T>(T aspect, string key = null) where T : IAspect
         {
-            key ??= typeof(T).Name;
+            key = key ?? typeof(T).Name;
             aspects.Add(key, aspect);
             aspect.container = this;
             return aspect;
@@ -29,7 +31,7 @@ namespace TheLiquidFire.AspectContainer
 
         public T GetAspect<T>(string key = null) where T : IAspect
         {
-            key ??= typeof(T).Name;
+            key = key ?? typeof(T).Name;
             var aspect = aspects.ContainsKey(key) ? (T)aspects[key] : default;
             return aspect;
         }

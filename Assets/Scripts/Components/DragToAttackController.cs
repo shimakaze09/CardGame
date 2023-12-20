@@ -1,8 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using TheLiquidFire.AspectContainer;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TheLiquidFire.AspectContainer;
 
 public class DragToAttackController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -31,19 +31,22 @@ public class DragToAttackController : MonoBehaviour, IBeginDragHandler, IDragHan
     public void OnBeginDrag(PointerEventData eventData)
     {
         var handler = stateMachine.currentState as IBeginDragHandler;
-        handler?.OnBeginDrag(eventData);
+        if (handler != null)
+            handler.OnBeginDrag(eventData);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         var handler = stateMachine.currentState as IDragHandler;
-        handler?.OnDrag(eventData);
+        if (handler != null)
+            handler.OnDrag(eventData);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         var handler = stateMachine.currentState as IEndDragHandler;
-        handler?.OnEndDrag(eventData);
+        if (handler != null)
+            handler.OnEndDrag(eventData);
     }
 
     #endregion
@@ -59,11 +62,13 @@ public class DragToAttackController : MonoBehaviour, IBeginDragHandler, IDragHan
     {
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (owner.gameStateMachine.currentState is not PlayerIdleState) return;
+            if (!(owner.gameStateMachine.currentState is PlayerIdleState))
+                return;
 
             var press = eventData.rawPointerPress;
             var view = press != null ? press.GetComponentInParent<BattlefieldCardView>() : null;
-            if (view == null) return;
+            if (view == null)
+                return;
 
             owner.attacker = view.card;
             owner.gameStateMachine.ChangeState<PlayerInputState>();
@@ -77,7 +82,8 @@ public class DragToAttackController : MonoBehaviour, IBeginDragHandler, IDragHan
         {
             var hover = eventData.pointerCurrentRaycast.gameObject;
             var view = hover != null ? hover.GetComponentInParent<BattlefieldCardView>() : null;
-            if (view != null) owner.defender = view.card;
+            if (view != null)
+                owner.defender = view.card;
             owner.stateMachine.ChangeState<CompleteState>();
         }
     }

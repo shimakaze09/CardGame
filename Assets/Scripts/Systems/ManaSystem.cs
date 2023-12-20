@@ -1,8 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using UnityEngine;
 
 public class ManaSystem : Aspect, IObserve
 {
@@ -47,6 +47,7 @@ public class ManaSystem : Aspect, IObserve
         var playCardAction = sender as PlayCardAction;
         var validator = args as Validator;
         var player = container.GetMatch().players[playCardAction.card.ownerIndex];
-        if (player.mana.Available < playCardAction.card.cost) validator.Invalidate();
+        if (player.mana.Available < playCardAction.card.cost)
+            validator.Invalidate();
     }
 }

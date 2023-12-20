@@ -1,8 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using UnityEngine;
+using TheLiquidFire.Animation;
 
 public class ClickToPlayCardController : MonoBehaviour
 {
@@ -38,7 +39,8 @@ public class ClickToPlayCardController : MonoBehaviour
     private void OnClickNotification(object sender, object args)
     {
         var handler = stateMachine.currentState as IClickableHandler;
-        handler?.OnClickNotification(sender, args);
+        if (handler != null)
+            handler.OnClickNotification(sender, args);
     }
 
     #region Controller States
@@ -58,12 +60,15 @@ public class ClickToPlayCardController : MonoBehaviour
         public void OnClickNotification(object sender, object args)
         {
             var gameStateMachine = owner.game.GetAspect<StateMachine>();
-            if (gameStateMachine.currentState is not PlayerIdleState) return;
+            if (!(gameStateMachine.currentState is PlayerIdleState))
+                return;
 
             var clickable = sender as Clickable;
             var cardView = clickable.GetComponent<CardView>();
-            if (cardView == null || cardView.card.zone != Zones.Hand ||
-                cardView.card.ownerIndex != owner.game.GetMatch().currentPlayerIndex) return;
+            if (cardView == null ||
+                cardView.card.zone != Zones.Hand ||
+                cardView.card.ownerIndex != owner.game.GetMatch().currentPlayerIndex)
+                return;
 
             gameStateMachine.ChangeState<PlayerInputState>();
             owner.activeCardView = cardView;

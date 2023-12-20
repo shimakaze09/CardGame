@@ -1,21 +1,22 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace TheLiquidFire.Pooling
 {
     public abstract class KeyedPooler<T> : BasePooler
     {
-        #region Fields / Properties
-
-        public Dictionary<T, Poolable> Collection = new();
-
-        #endregion
-
         #region Events
 
         public Action<Poolable, T> willEnqueueForKey;
         public Action<Poolable, T> didDequeueForKey;
+
+        #endregion
+
+        #region Fields / Properties
+
+        public Dictionary<T, Poolable> Collection = new();
 
         #endregion
 

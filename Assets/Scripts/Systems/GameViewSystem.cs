@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TheLiquidFire.AspectContainer;
@@ -49,13 +49,11 @@ public class GameViewSystem : MonoBehaviour, IAspect
 
         foreach (var p in match.players)
         {
-            for (var i = 0; i < Player.MaxDeck; i++)
+            for (var i = 0; i < Player.maxDeck; ++i)
             {
-                var card = new Minion
-                {
-                    name = "Card" + i,
-                    cost = Random.Range(1, 10)
-                };
+                var card = new Minion();
+                card.name = "Card " + i.ToString();
+                card.cost = Random.Range(1, 10);
                 card.maxHitPoints = card.hitPoints = Random.Range(1, card.cost);
                 card.attack = card.cost - card.hitPoints;
                 card.allowedAttacks = 1;

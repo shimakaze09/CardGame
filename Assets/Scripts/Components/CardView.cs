@@ -1,16 +1,17 @@
-﻿using TMPro;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CardView : MonoBehaviour
 {
-    public TextMeshProUGUI attackText;
     public Image cardBack;
     public Image cardFront;
-    public TextMeshProUGUI cardText;
-    public TextMeshProUGUI healthText;
-    public TextMeshProUGUI manaText;
-    public TextMeshProUGUI titleText;
+    public Text healthText;
+    public Text attackText;
+    public Text manaText;
+    public Text titleText;
+    public Text cardText;
 
     public bool isFaceUp { get; private set; }
     public Card card;
@@ -19,7 +20,7 @@ public class CardView : MonoBehaviour
 
     private void Awake()
     {
-        faceUpElements = new[]
+        faceUpElements = new GameObject[]
         {
             cardFront.gameObject,
             healthText.gameObject,
@@ -28,7 +29,7 @@ public class CardView : MonoBehaviour
             titleText.gameObject,
             cardText.gameObject
         };
-        faceDownElements = new[]
+        faceDownElements = new GameObject[]
         {
             cardBack.gameObject
         };
@@ -47,8 +48,7 @@ public class CardView : MonoBehaviour
 
     private void Toggle(GameObject[] elements, bool isActive)
     {
-        foreach (var element in elements)
-            element.SetActive(isActive);
+        for (var i = 0; i < elements.Length; ++i) elements[i].SetActive(isActive);
     }
 
     private void Refresh()
@@ -60,7 +60,8 @@ public class CardView : MonoBehaviour
         titleText.text = card.name;
         cardText.text = card.text;
 
-        if (card is Minion minion)
+        var minion = card as Minion;
+        if (minion != null)
         {
             attackText.text = minion.attack.ToString();
             healthText.text = minion.maxHitPoints.ToString();

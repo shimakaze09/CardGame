@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace TheLiquidFire.Extensions
 {
@@ -18,7 +18,7 @@ namespace TheLiquidFire.Extensions
 
         public static T Last<T>(this List<T> list)
         {
-            return list[^1];
+            return list[list.Count - 1];
         }
 
         public static T Draw<T>(this List<T> list)
@@ -36,7 +36,7 @@ namespace TheLiquidFire.Extensions
         {
             var resultCount = Mathf.Min(count, list.Count);
             var result = new List<T>(resultCount);
-            for (var i = 0; i < resultCount; i++)
+            for (var i = 0; i < resultCount; ++i)
             {
                 var item = list.Draw();
                 result.Add(item);

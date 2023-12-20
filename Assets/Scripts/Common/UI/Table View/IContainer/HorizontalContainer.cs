@@ -1,11 +1,14 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 namespace TheLiquidFire.UI
 {
     public class HorizontalContainer : IContainer
     {
-        private readonly ScrollRect ScrollRect;
-        private readonly ISpacer Spacer;
+        public IFlow Flow { get; private set; }
+        private ScrollRect ScrollRect;
+        private ISpacer Spacer;
 
         public HorizontalContainer(ScrollRect scrollRect, ISpacer spacer)
         {
@@ -17,8 +20,6 @@ namespace TheLiquidFire.UI
             else
                 Flow = new RightToLeft(scrollRect, spacer);
         }
-
-        public IFlow Flow { get; }
 
         public void AutoSize()
         {
