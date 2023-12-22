@@ -21,6 +21,8 @@ public class ClickToPlayCardController : MonoBehaviour
         container.AddAspect(new ConfirmOrCancelState()).owner = this;
         container.AddAspect(new CancellingState()).owner = this;
         container.AddAspect(new ConfirmState()).owner = this;
+        container.AddAspect(new ShowTargetState()).owner = this;
+        container.AddAspect(new TargetState()).owner = this;
         container.AddAspect(new ResetState()).owner = this;
         stateMachine.ChangeState<WaitingForInputState>();
     }
@@ -97,9 +99,17 @@ public class ClickToPlayCardController : MonoBehaviour
         {
             var cardView = (sender as Clickable).GetComponent<CardView>();
             if (owner.activeCardView == cardView)
-                owner.stateMachine.ChangeState<ConfirmState>();
+            {
+                var target = owner.activeCardView.card.GetAspect<Target>();
+                if (target != null)
+                    owner.stateMachine.ChangeState<ShowTargetState>();
+                else
+                    owner.stateMachine.ChangeState<ConfirmState>();
+            }
             else
+            {
                 owner.stateMachine.ChangeState<CancellingState>();
+            }
         }
     }
 
@@ -127,6 +137,36 @@ public class ClickToPlayCardController : MonoBehaviour
             var action = new PlayCardAction(owner.activeCardView.card);
             owner.stateMachine.ChangeState<ResetState>();
             owner.game.Perform(action);
+        }
+    }
+
+    private class ShowTargetState : BaseControllerState
+    {
+        public override void Enter()
+        {
+            base.Enter();
+            owner.StartCoroutine(HideProcess());
+        }
+
+        private IEnumerator HideProcess()
+        {
+            var handView = owner.activeCardView.GetComponentInParent<HandView>();
+            yield return owner.StartCoroutine(handView.LayoutCards());
+            owner.stateMachine.ChangeState<TargetState>();
+        }
+    }
+
+    private class TargetState : BaseControllerState, IClickableHandler
+    {
+        public void OnClickNotification(object sender, object args)
+        {
+            var target = owner.activeCardView.card.GetAspect<Target>();
+            var cardView = (sender as Clickable).GetComponent<BattlefieldCardView>();
+            if (cardView != null)
+                target.selected = cardView.card;
+            else
+                target.selected = null;
+            owner.stateMachine.ChangeState<ConfirmState>();
         }
     }
 

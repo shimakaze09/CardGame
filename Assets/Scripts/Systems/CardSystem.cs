@@ -5,12 +5,14 @@ public class CardSystem : Aspect
 {
     public List<Card> playable = new();
 
-    public void Refresh()
+    public void Refresh(ControlModes mode)
     {
         var match = container.GetMatch();
+        var targetSystem = container.GetAspect<TargetSystem>();
         playable.Clear();
         foreach (var card in match.CurrentPlayer[Zones.Hand])
         {
+            targetSystem.AutoTarget(card, mode);
             var playAction = new PlayCardAction(card);
             if (playAction.Validate())
                 playable.Add(card);

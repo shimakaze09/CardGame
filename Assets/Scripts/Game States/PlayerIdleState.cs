@@ -8,9 +8,10 @@ public class PlayerIdleState : BaseState
 
     public override void Enter()
     {
+        var mode = container.GetMatch().CurrentPlayer.mode;
         container.GetAspect<AttackSystem>().Refresh();
-        container.GetAspect<CardSystem>().Refresh();
-        if (container.GetMatch().CurrentPlayer.mode == ControlModes.Computer)
+        container.GetAspect<CardSystem>().Refresh(mode);
+        if (mode == ControlModes.Computer)
             container.GetAspect<EnemySystem>().TakeTurn();
         this.PostNotification(EnterNotification);
     }

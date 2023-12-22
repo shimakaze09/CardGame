@@ -62,6 +62,7 @@ public class GameViewSystem : MonoBehaviour, IAspect
                     card.text = "Taunt";
                 }
 
+                Temp_AddTargeting(card);
                 p[Zones.Deck].Add(card);
             }
 
@@ -71,6 +72,35 @@ public class GameViewSystem : MonoBehaviour, IAspect
             hero.ownerIndex = p.index;
             hero.zone = Zones.Hero;
             p.hero.Add(hero);
+        }
+    }
+
+    private void Temp_AddTargeting(Card card)
+    {
+        var random = Random.Range(0, 3);
+        var target = card.AddAspect<Target>();
+        var text = string.IsNullOrEmpty(card.text) ? "" : card.text + ". ";
+        switch (random)
+        {
+            case 0:
+                target.required = false;
+                target.allowed = target.preferred = new Mark(Alliance.Ally, Zones.Active);
+                card.text = text + "Ally Target if available";
+                break;
+            case 1:
+                target.required = true;
+                target.allowed = target.preferred = new Mark(Alliance.Enemy, Zones.Active);
+                card.text = text + "Enemy Target required";
+                break;
+            case 2:
+                target.required = true;
+                target.allowed = target.preferred = new Mark(Alliance.Enemy, Zones.Battlefield);
+                card.text = text + "Enemy Minion Target required";
+                break;
+            default:
+                // Don't add anything
+                Debug.LogError("Shouldn't have gotten here");
+                break;
         }
     }
 }
