@@ -1,41 +1,14 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using TheLiquidFire.Animation;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using TheLiquidFire.Animation;
+using UnityEngine;
 
 public class ChangeTurnView : MonoBehaviour
 {
     [SerializeField] private Transform yourTurnBanner;
     [SerializeField] private ChangeTurnButtonView buttonView;
     private IContainer game;
-
-    public void ChangeTurnButtonPressed()
-    {
-        if (CanChangeTurn())
-        {
-            var system = game.GetAspect<MatchSystem>();
-            system.ChangeTurn();
-        }
-        else
-        {
-            // TODO: Play an error input sound effect?
-        }
-    }
-
-    private bool CanChangeTurn()
-    {
-        var stateMachine = game.GetAspect<StateMachine>();
-        if (!(stateMachine.currentState is PlayerIdleState))
-            return false;
-
-        var player = game.GetMatch().CurrentPlayer;
-        if (player.mode != ControlModes.Local)
-            return false;
-
-        return true;
-    }
 
     private void Awake()
     {
@@ -50,6 +23,29 @@ public class ChangeTurnView : MonoBehaviour
     private void OnDisable()
     {
         this.RemoveObserver(OnPrepareChangeTurn, Global.PrepareNotification<ChangeTurnAction>(), game);
+    }
+
+    public void ChangeTurnButtonPressed()
+    {
+        if (CanChangeTurn())
+        {
+            var system = game.GetAspect<MatchSystem>();
+            system.ChangeTurn();
+        }
+        // TODO: Play an error input sound effect?
+    }
+
+    private bool CanChangeTurn()
+    {
+        var stateMachine = game.GetAspect<StateMachine>();
+        if (!(stateMachine.currentState is PlayerIdleState))
+            return false;
+
+        var player = game.GetMatch().CurrentPlayer;
+        if (player.mode != ControlModes.Local)
+            return false;
+
+        return true;
     }
 
     private void OnPrepareChangeTurn(object sender, object args)

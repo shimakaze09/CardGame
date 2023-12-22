@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TheLiquidFire.AspectContainer;
-using TheLiquidFire.Notifications;
+﻿using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Extensions;
+using TheLiquidFire.Notifications;
+using UnityEngine;
 
 public class PlayerSystem : Aspect, IObserve
 {

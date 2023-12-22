@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public static class Global
@@ -9,7 +8,7 @@ public static class Global
         return GenerateID(typeof(T));
     }
 
-    public static int GenerateID(System.Type type)
+    public static int GenerateID(Type type)
     {
         return Animator.StringToHash(type.Name);
     }
@@ -19,7 +18,7 @@ public static class Global
         return PrepareNotification(typeof(T));
     }
 
-    public static string PrepareNotification(System.Type type)
+    public static string PrepareNotification(Type type)
     {
         return string.Format("{0}.PrepareNotification", type.Name);
     }
@@ -29,7 +28,7 @@ public static class Global
         return PerformNotification(typeof(T));
     }
 
-    public static string PerformNotification(System.Type type)
+    public static string PerformNotification(Type type)
     {
         return string.Format("{0}.PerformNotification", type.Name);
     }
@@ -39,7 +38,7 @@ public static class Global
         return ValidateNotification(typeof(T));
     }
 
-    public static string ValidateNotification(System.Type type)
+    public static string ValidateNotification(Type type)
     {
         return string.Format("{0}.ValidateNotification", type.Name);
     }
@@ -49,7 +48,7 @@ public static class Global
         return CancelNotification(typeof(T));
     }
 
-    public static string CancelNotification(System.Type type)
+    public static string CancelNotification(Type type)
     {
         return string.Format("{0}.CancelNotification", type.Name);
     }

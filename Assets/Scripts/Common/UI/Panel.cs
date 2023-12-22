@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using TheLiquidFire.Animation;
+using UnityEngine;
 
 namespace TheLiquidFire.UI
 {
@@ -111,11 +110,9 @@ namespace TheLiquidFire.UI
                 Transition = anchor.MoveToAnchorPosition(p.myAnchor, p.parentAnchor, p.offset);
                 return Transition;
             }
-            else
-            {
-                anchor.SnapToAnchorPosition(p.myAnchor, p.parentAnchor, p.offset);
-                return null;
-            }
+
+            anchor.SnapToAnchorPosition(p.myAnchor, p.parentAnchor, p.offset);
+            return null;
         }
 
         #endregion

@@ -1,19 +1,11 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 
 namespace TheLiquidFire.DataTypes
 {
     [Serializable]
     public struct Point : IEquatable<Point>
     {
-        #region Fields
-
-        public int x;
-        public int y;
-
-        #endregion
-
         #region Constructors
 
         public Point(int x, int y)
@@ -21,6 +13,13 @@ namespace TheLiquidFire.DataTypes
             this.x = x;
             this.y = y;
         }
+
+        #endregion
+
+        #region Fields
+
+        public int x;
+        public int y;
 
         #endregion
 

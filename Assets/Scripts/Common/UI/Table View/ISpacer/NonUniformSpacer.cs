@@ -1,18 +1,16 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using TheLiquidFire.DataTypes;
 using TheLiquidFire.Extensions;
+using UnityEngine;
 
 namespace TheLiquidFire.UI
 {
     public class NonUniformSpacer : ISpacer
     {
-        public int TotalSize { get; private set; }
-        private List<int> Sizes;
-        private List<int> Positions;
-        private Func<int, int> SizeForIndex;
+        private readonly List<int> Positions;
+        private readonly Func<int, int> SizeForIndex;
+        private readonly List<int> Sizes;
 
         public NonUniformSpacer(Func<int, int> sizeForIndex, int cellCount)
         {
@@ -29,6 +27,8 @@ namespace TheLiquidFire.UI
                 TotalSize += size;
             }
         }
+
+        public int TotalSize { get; private set; }
 
         public int GetSize(int index)
         {

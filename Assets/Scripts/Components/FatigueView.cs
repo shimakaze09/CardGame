@@ -1,10 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using TheLiquidFire.Animation;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using TheLiquidFire.Animation;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class FatigueView : MonoBehaviour
 {

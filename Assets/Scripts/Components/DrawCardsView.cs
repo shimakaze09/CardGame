@@ -1,9 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TheLiquidFire.Notifications;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Extensions;
+using TheLiquidFire.Notifications;
+using UnityEngine;
 
 public class DrawCardsView : MonoBehaviour
 {
@@ -35,7 +34,7 @@ public class DrawCardsView : MonoBehaviour
         for (var i = 0; i < drawAction.cards.Count; ++i)
         {
             var deckSize = action.player[Zones.Deck].Count + drawAction.cards.Count - (i + 1);
-            playerView.deck.ShowDeckSize((float)deckSize / (float)Player.maxDeck);
+            playerView.deck.ShowDeckSize(deckSize / (float)Player.maxDeck);
 
             var cardView = boardView.cardPooler.Dequeue().GetComponent<CardView>();
             cardView.Flip(false);

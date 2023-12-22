@@ -1,11 +1,22 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace TheLiquidFire.Pooling
 {
     public class GameObjectPoolController : MonoBehaviour
     {
+        #region MonoBehaviour
+
+        private void Awake()
+        {
+            if (instance != null && instance != this)
+                Destroy(this);
+            else
+                instance = this;
+        }
+
+        #endregion
+
         #region Fields / Properties
 
         private static GameObjectPoolController Instance
@@ -20,19 +31,7 @@ namespace TheLiquidFire.Pooling
 
         private static GameObjectPoolController instance;
 
-        private static Dictionary<string, PoolData> pools = new();
-
-        #endregion
-
-        #region MonoBehaviour
-
-        private void Awake()
-        {
-            if (instance != null && instance != this)
-                Destroy(this);
-            else
-                instance = this;
-        }
+        private static readonly Dictionary<string, PoolData> pools = new();
 
         #endregion
 
@@ -124,7 +123,7 @@ namespace TheLiquidFire.Pooling
 
         private static Poolable CreateInstance(string key, GameObject prefab)
         {
-            var instance = Instantiate(prefab) as GameObject;
+            var instance = Instantiate(prefab);
             var p = instance.AddComponent<Poolable>();
             p.key = key;
             return p;

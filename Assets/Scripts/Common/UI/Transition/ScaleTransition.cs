@@ -1,21 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
+using System.Collections;
 using TheLiquidFire.Animation;
+using UnityEngine;
 
 namespace TheLiquidFire.UI
 {
     public class ScaleTransition : BaseTransition
     {
-        [Serializable]
-        public class Data
-        {
-            public Vector3 scale;
-            public float duration;
-            public Func<float, float, float, float> equation;
-        }
-
         public Data showData = new()
         {
             scale = Vector3.one,
@@ -49,6 +40,14 @@ namespace TheLiquidFire.UI
                 yield return null;
             if (complete != null)
                 complete();
+        }
+
+        [Serializable]
+        public class Data
+        {
+            public Vector3 scale;
+            public float duration;
+            public Func<float, float, float, float> equation;
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TheLiquidFire.AspectContainer;
 using UnityEngine;
-using TheLiquidFire.AspectContainer;
 
 public class GameOverState : BaseState
 {

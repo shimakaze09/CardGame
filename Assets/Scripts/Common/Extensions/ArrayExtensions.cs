@@ -1,8 +1,4 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
-
-namespace TheLiquidFire.Extensions
+﻿namespace TheLiquidFire.Extensions
 {
     public static class ArrayExtensions
     {

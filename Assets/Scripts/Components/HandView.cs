@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TheLiquidFire.Animation;
-using TheLiquidFire.Pooling;
-using TheLiquidFire.Notifications;
 using TheLiquidFire.AspectContainer;
+using TheLiquidFire.Notifications;
+using TheLiquidFire.Pooling;
+using UnityEngine;
 
 public class HandView : MonoBehaviour
 {
@@ -141,7 +141,7 @@ public class HandView : MonoBehaviour
             yield break;
 
         cards.Remove(cardView.transform);
-        StartCoroutine(LayoutCards(true));
+        StartCoroutine(LayoutCards());
         var discard = OverdrawCard(cardView.transform);
         while (discard.MoveNext())
             yield return null;
@@ -149,7 +149,7 @@ public class HandView : MonoBehaviour
 
     private IEnumerator CancelPlayCardViewer(IContainer game, GameAction action)
     {
-        var layout = LayoutCards(true);
+        var layout = LayoutCards();
         while (layout.MoveNext())
             yield return null;
     }

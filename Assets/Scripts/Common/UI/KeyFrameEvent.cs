@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using TheLiquidFire.Notifications;
+﻿using TheLiquidFire.Notifications;
+using UnityEngine;
 
 namespace TheLiquidFire.UI
 {

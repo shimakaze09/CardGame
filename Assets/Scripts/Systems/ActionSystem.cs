@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
 
@@ -117,15 +116,14 @@ public class ActionSystem : Aspect
 
             var phase = ReactPhase(reactions);
             while (phase.MoveNext()) yield return null;
-        } while (repeats == true && reactions.Count > 0);
+        } while (repeats && reactions.Count > 0);
     }
 
     private int SortActions(GameAction x, GameAction y)
     {
         if (x.priority != y.priority)
             return y.priority.CompareTo(x.priority);
-        else
-            return x.orderOfPlay.CompareTo(y.orderOfPlay);
+        return x.orderOfPlay.CompareTo(y.orderOfPlay);
     }
 
     #endregion

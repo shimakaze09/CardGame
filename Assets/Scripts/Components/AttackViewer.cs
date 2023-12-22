@@ -1,9 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TheLiquidFire.Notifications;
-using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Animation;
+using TheLiquidFire.AspectContainer;
+using TheLiquidFire.Notifications;
+using UnityEngine;
 
 public class AttackViewer : MonoBehaviour
 {

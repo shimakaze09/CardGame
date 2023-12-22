@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ChangeTurnAction : GameAction
+﻿public class ChangeTurnAction : GameAction
 {
     public int targetPlayerIndex;
 

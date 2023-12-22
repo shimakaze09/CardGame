@@ -1,16 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TheLiquidFire.Notifications;
+﻿using TheLiquidFire.Notifications;
 
 public class Validator
 {
-    public bool isValid { get; private set; }
-
     public Validator()
     {
         isValid = true;
     }
+
+    public bool isValid { get; private set; }
 
     public void Invalidate()
     {

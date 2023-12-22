@@ -1,87 +1,94 @@
-﻿using UnityEngine;
-using UnityEditor;
-using UnityEngine.TestTools;
-using NUnit.Framework;
-using System.Collections;
+﻿using NUnit.Framework;
 using TheLiquidFire.AspectContainer;
 
-public class AspectContainerTests {
+public class AspectContainerTests
+{
+    [Test]
+    public void TestContainerCanAddAspect()
+    {
+        var container = new Container();
+        container.AddAspect<TestAspect>();
+        Assert.AreEqual(container.Aspects().Count, 1);
+    }
 
-	private class TestAspect : IAspect {
-		public IContainer container { get; set; }
-	}
+    [Test]
+    public void TestContainerCanAddMultipleAspects()
+    {
+        var container = new Container();
+        container.AddAspect<TestAspect>("Test1");
+        container.AddAspect<TestAspect>("Test2");
+        Assert.AreEqual(container.Aspects().Count, 2);
+    }
 
-	private class AltTestAspect : IAspect {
-		public IContainer container { get; set; }
-	}
+    [Test]
+    public void TestContainerCanAddMultipleTypesOfAspects()
+    {
+        var container = new Container();
+        container.AddAspect<TestAspect>();
+        container.AddAspect<AltTestAspect>();
+        Assert.AreEqual(container.Aspects().Count, 2);
+    }
 
-	[Test]
-	public void TestContainerCanAddAspect() {
-		var container = new Container ();
-		container.AddAspect<TestAspect> ();
-		Assert.AreEqual (container.Aspects().Count, 1);
-	}
+    [Test]
+    public void TestContainerCanGetAspectWithNoKey()
+    {
+        var container = new Container();
+        var original = container.AddAspect<TestAspect>();
+        var fetch = container.GetAspect<TestAspect>();
+        Assert.AreSame(original, fetch);
+    }
 
-	[Test]
-	public void TestContainerCanAddMultipleAspects() {
-		var container = new Container ();
-		container.AddAspect<TestAspect> ("Test1");
-		container.AddAspect<TestAspect> ("Test2");
-		Assert.AreEqual (container.Aspects().Count, 2);
-	}
+    [Test]
+    public void TestContainerCanGetAspectWithKey()
+    {
+        var container = new Container();
+        var original = container.AddAspect<TestAspect>("Foo");
+        var fetch = container.GetAspect<TestAspect>("Foo");
+        Assert.AreSame(original, fetch);
+    }
 
-	[Test]
-	public void TestContainerCanAddMultipleTypesOfAspects() {
-		var container = new Container ();
-		container.AddAspect<TestAspect> ();
-		container.AddAspect<AltTestAspect> ();
-		Assert.AreEqual (container.Aspects().Count, 2);
-	}
+    [Test]
+    public void TestContainerCanTryGetMissingAspect()
+    {
+        var container = new Container();
+        var fetch = container.GetAspect<TestAspect>("Foo");
+        Assert.IsNull(fetch);
+    }
 
-	[Test]
-	public void TestContainerCanGetAspectWithNoKey() {
-		var container = new Container ();
-		var original = container.AddAspect<TestAspect> ();
-		var fetch = container.GetAspect<TestAspect> ();
-		Assert.AreSame (original, fetch);
-	}
+    [Test]
+    public void TestContainerCanAddPreCreatedAspect()
+    {
+        var container = new Container();
+        var aspect = new TestAspect();
+        container.AddAspect(aspect);
+        Assert.IsNotEmpty(container.Aspects());
+    }
 
-	[Test]
-	public void TestContainerCanGetAspectWithKey() {
-		var container = new Container ();
-		var original = container.AddAspect<TestAspect> ("Foo");
-		var fetch = container.GetAspect<TestAspect> ("Foo");
-		Assert.AreSame (original, fetch);
-	}
+    [Test]
+    public void TestContainerCanGetPreCreatedAspect()
+    {
+        var container = new Container();
+        var original = new TestAspect();
+        container.AddAspect(original);
+        var fetch = container.GetAspect<TestAspect>();
+        Assert.AreSame(original, fetch);
+    }
 
-	[Test]
-	public void TestContainerCanTryGetMissingAspect() {
-		var container = new Container ();
-		var fetch = container.GetAspect<TestAspect> ("Foo");
-		Assert.IsNull (fetch);
-	}
+    [Test]
+    public void TestAspectTracksItsContainer()
+    {
+        var container = new Container();
+        var aspect = container.AddAspect<TestAspect>();
+        Assert.IsNotNull(aspect.container);
+    }
 
-	[Test]
-	public void TestContainerCanAddPreCreatedAspect() {
-		var container = new Container ();
-		var aspect = new TestAspect ();
-		container.AddAspect<TestAspect> (aspect);
-		Assert.IsNotEmpty (container.Aspects());
-	}
+    private class TestAspect : IAspect
+    {
+        public IContainer container { get; set; }
+    }
 
-	[Test]
-	public void TestContainerCanGetPreCreatedAspect() {
-		var container = new Container ();
-		var original = new TestAspect ();
-		container.AddAspect<TestAspect> (original);
-		var fetch = container.GetAspect<TestAspect> ();
-		Assert.AreSame(original, fetch);
-	}
-
-	[Test]
-	public void TestAspectTracksItsContainer() {
-		var container = new Container ();
-		var aspect = container.AddAspect<TestAspect> ();
-		Assert.IsNotNull (aspect.container);
-	}
+    private class AltTestAspect : IAspect
+    {
+        public IContainer container { get; set; }
+    }
 }

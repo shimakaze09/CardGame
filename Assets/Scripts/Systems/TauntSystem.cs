@@ -2,34 +2,34 @@
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
 
-public class DestructableSystem : Aspect, IObserve
+public class TauntSystem : Aspect, IObserve
 {
     public void Awake()
     {
-        this.AddObserver(OnPerformDamageAction, Global.PerformNotification<DamageAction>(), container);
         this.AddObserver(OnFilterAttackTargets, AttackSystem.FilterTargetsNotification, container);
     }
 
     public void Destroy()
     {
-        this.RemoveObserver(OnPerformDamageAction, Global.PerformNotification<DamageAction>(), container);
         this.RemoveObserver(OnFilterAttackTargets, AttackSystem.FilterTargetsNotification, container);
-    }
-
-    private void OnPerformDamageAction(object sender, object args)
-    {
-        var action = args as DamageAction;
-        foreach (var target in action.targets) target.hitPoints -= action.amount;
     }
 
     private void OnFilterAttackTargets(object sender, object args)
     {
         var candidates = args as List<Card>;
+        if (TargetsContainTaunt(candidates) == false)
+            return;
+
         for (var i = candidates.Count - 1; i >= 0; --i)
-        {
-            var destructable = candidates[i] as IDestructable;
-            if (destructable == null)
+            if (candidates[i].GetAspect<Taunt>() == null)
                 candidates.RemoveAt(i);
-        }
+    }
+
+    private bool TargetsContainTaunt(List<Card> cards)
+    {
+        foreach (var card in cards)
+            if (card.GetAspect<Taunt>() != null)
+                return true;
+        return false;
     }
 }

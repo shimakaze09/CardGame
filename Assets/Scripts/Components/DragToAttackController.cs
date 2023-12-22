@@ -1,17 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TheLiquidFire.AspectContainer;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TheLiquidFire.AspectContainer;
 
 public class DragToAttackController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    private Card attacker;
+    private Container container;
+    private Card defender;
+
     private IContainer gameContainer;
     private StateMachine gameStateMachine;
-    private Container container;
     private StateMachine stateMachine;
-    private Card attacker;
-    private Card defender;
 
     private void Awake()
     {

@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TheLiquidFire.Notifications;
 using UnityEngine;
 using UnityEngine.UI;
-using TheLiquidFire.Notifications;
-using TheLiquidFire.AspectContainer;
 
 public abstract class BattlefieldCardView : MonoBehaviour
 {

@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TheLiquidFire.Notifications;
-using TheLiquidFire.AspectContainer;
+﻿using UnityEngine.UI;
 
 public class HeroView : BattlefieldCardView
 {

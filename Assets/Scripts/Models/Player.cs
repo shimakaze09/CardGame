@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class Player
 {
@@ -10,17 +8,22 @@ public class Player
     public const int maxSecrets = 5;
 
     public readonly int index;
-    public ControlModes mode;
-    public Mana mana = new();
+    public List<Card> battlefield = new(maxBattlefield);
+    public List<Card> deck = new(maxDeck);
     public int fatigue;
+    public List<Card> graveyard = new(maxDeck);
+    public List<Card> hand = new(maxHand);
 
     public List<Card> hero = new(1);
-    public List<Card> weapon = new(1);
-    public List<Card> deck = new(maxDeck);
-    public List<Card> hand = new(maxHand);
-    public List<Card> battlefield = new(maxBattlefield);
+    public Mana mana = new();
+    public ControlModes mode;
     public List<Card> secrets = new(maxSecrets);
-    public List<Card> graveyard = new(maxDeck);
+    public List<Card> weapon = new(1);
+
+    public Player(int index)
+    {
+        this.index = index;
+    }
 
     public List<Card> this[Zones z]
     {
@@ -46,10 +49,5 @@ public class Player
                     return null;
             }
         }
-    }
-
-    public Player(int index)
-    {
-        this.index = index;
     }
 }

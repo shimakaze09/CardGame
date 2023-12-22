@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class DamageAction : GameAction
 {
-    public List<IDestructable> targets;
     public int amount;
+    public List<IDestructable> targets;
 
     public DamageAction(IDestructable target, int amount)
     {

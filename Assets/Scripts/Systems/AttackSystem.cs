@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
 
@@ -11,6 +9,18 @@ public class AttackSystem : Aspect, IObserve
 
     public List<Card> validAttackers { get; private set; }
     public List<Card> validTargets { get; private set; }
+
+    public void Awake()
+    {
+        this.AddObserver(OnValidateAttackAction, Global.ValidateNotification<AttackAction>());
+        this.AddObserver(OnPerformAttackAction, Global.PerformNotification<AttackAction>(), container);
+    }
+
+    public void Destroy()
+    {
+        this.RemoveObserver(OnValidateAttackAction, Global.ValidateNotification<AttackAction>());
+        this.RemoveObserver(OnPerformAttackAction, Global.PerformNotification<AttackAction>(), container);
+    }
 
     public void Refresh()
     {
@@ -25,18 +35,6 @@ public class AttackSystem : Aspect, IObserve
         list.Add(player[Zones.Hero][0]);
         list.AddRange(player[Zones.Battlefield]);
         return list;
-    }
-
-    public void Awake()
-    {
-        this.AddObserver(OnValidateAttackAction, Global.ValidateNotification<AttackAction>());
-        this.AddObserver(OnPerformAttackAction, Global.PerformNotification<AttackAction>(), container);
-    }
-
-    public void Destroy()
-    {
-        this.RemoveObserver(OnValidateAttackAction, Global.ValidateNotification<AttackAction>());
-        this.RemoveObserver(OnPerformAttackAction, Global.PerformNotification<AttackAction>(), container);
     }
 
     private List<Card> GetFiltered(Player player, string filterNotificationName)

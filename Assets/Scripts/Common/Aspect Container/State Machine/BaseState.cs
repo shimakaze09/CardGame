@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace TheLiquidFire.AspectContainer
+﻿namespace TheLiquidFire.AspectContainer
 {
     public interface IState : IAspect
     {

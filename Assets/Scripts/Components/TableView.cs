@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System;
+using TheLiquidFire.Animation;
+using TheLiquidFire.AspectContainer;
+using TheLiquidFire.Extensions;
 using TheLiquidFire.Notifications;
 using TheLiquidFire.Pooling;
-using TheLiquidFire.Extensions;
-using TheLiquidFire.AspectContainer;
-using TheLiquidFire.Animation;
+using UnityEngine;
 
 public class TableView : MonoBehaviour
 {
@@ -51,7 +50,7 @@ public class TableView : MonoBehaviour
         var playerView = GetComponentInParent<PlayerView>();
         var cardView = playerView.hand.GetView(summon.minion);
         playerView.hand.Dismiss(cardView);
-        StartCoroutine(playerView.hand.LayoutCards(true));
+        StartCoroutine(playerView.hand.LayoutCards());
 
         var minionView = minionPooler.Dequeue().GetComponent<MinionView>();
         minionView.transform.ResetParent(transform);

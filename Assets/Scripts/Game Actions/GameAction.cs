@@ -1,24 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TheLiquidFire.AspectContainer;
+﻿using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
 
 public class GameAction
 {
-    #region Fields & Properties
-
-    public readonly int id;
-    public Player player { get; set; }
-    public int priority { get; set; }
-    public int orderOfPlay { get; set; }
-    public bool isCanceled { get; protected set; }
-    public Phase prepare { get; protected set; }
-    public Phase perform { get; protected set; }
-    public Phase cancel { get; protected set; }
-
-    #endregion
-
     #region Constructor
 
     public GameAction()
@@ -37,6 +21,19 @@ public class GameAction
     {
         isCanceled = true;
     }
+
+    #endregion
+
+    #region Fields & Properties
+
+    public readonly int id;
+    public Player player { get; set; }
+    public int priority { get; set; }
+    public int orderOfPlay { get; set; }
+    public bool isCanceled { get; protected set; }
+    public Phase prepare { get; protected set; }
+    public Phase perform { get; protected set; }
+    public Phase cancel { get; protected set; }
 
     #endregion
 

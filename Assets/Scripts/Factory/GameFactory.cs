@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TheLiquidFire.AspectContainer;
+﻿using TheLiquidFire.AspectContainer;
 
 public static class GameFactory
 {
@@ -22,6 +19,7 @@ public static class GameFactory
         game.AddAspect<MatchSystem>();
         game.AddAspect<MinionSystem>();
         game.AddAspect<PlayerSystem>();
+        game.AddAspect<TauntSystem>();
         game.AddAspect<VictorySystem>();
 
         // Add Other

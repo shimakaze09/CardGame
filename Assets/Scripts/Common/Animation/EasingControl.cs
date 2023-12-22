@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Collections;
+using UnityEngine;
 
 namespace TheLiquidFire.Animation
 {
@@ -22,7 +22,7 @@ namespace TheLiquidFire.Animation
             Normal,
             Real,
             Fixed
-        };
+        }
 
         public enum PlayState
         {
@@ -30,19 +30,19 @@ namespace TheLiquidFire.Animation
             Paused,
             Playing,
             Reversing
-        };
+        }
 
         public enum EndBehaviour
         {
             Constant,
             Reset
-        };
+        }
 
         public enum LoopType
         {
             Repeat,
             PingPong
-        };
+        }
 
         #endregion
 
@@ -55,10 +55,10 @@ namespace TheLiquidFire.Animation
         public LoopType loopType = LoopType.Repeat;
         public bool IsPlaying => playState == PlayState.Playing || playState == PlayState.Reversing;
 
-        public float startValue = 0.0f;
+        public float startValue;
         public float endValue = 1.0f;
         public float duration = 1.0f;
-        public int loopCount = 0;
+        public int loopCount;
         public Func<float, float, float, float> equation = EasingEquations.Linear;
 
         public float currentTime { get; private set; }

@@ -1,21 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
+using System.Collections;
 using TheLiquidFire.Animation;
 
 namespace TheLiquidFire.UI
 {
     public class PanelTransition : BaseTransition
     {
-        [Serializable]
-        public class Data
-        {
-            public string position;
-            public float duration;
-            public Func<float, float, float, float> equation;
-        }
-
         public Panel panel;
 
         public Data showData = new()
@@ -53,6 +43,14 @@ namespace TheLiquidFire.UI
                 yield return null;
             if (complete != null)
                 complete();
+        }
+
+        [Serializable]
+        public class Data
+        {
+            public string position;
+            public float duration;
+            public Func<float, float, float, float> equation;
         }
     }
 }

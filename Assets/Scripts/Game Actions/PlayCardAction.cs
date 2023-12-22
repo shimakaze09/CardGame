@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PlayCardAction : GameAction
+﻿public class PlayCardAction : GameAction
 {
     public Card card;
 

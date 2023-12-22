@@ -1,15 +1,14 @@
-﻿using UnityEngine;
+﻿using TheLiquidFire.DataTypes;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using TheLiquidFire.DataTypes;
 
 namespace TheLiquidFire.UI
 {
     public class LeftToRight : IFlow
     {
-        private ScrollRect ScrollRect;
-        private ISpacer Spacer;
-        private int ViewWidth;
+        private readonly ScrollRect ScrollRect;
+        private readonly ISpacer Spacer;
+        private readonly int ViewWidth;
 
         public LeftToRight(ScrollRect scrollRect, ISpacer spacer)
         {

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class CardView : MonoBehaviour
@@ -12,15 +10,15 @@ public class CardView : MonoBehaviour
     public Text manaText;
     public Text titleText;
     public Text cardText;
+    public Card card;
+    private GameObject[] faceDownElements;
+    private GameObject[] faceUpElements;
 
     public bool isFaceUp { get; private set; }
-    public Card card;
-    private GameObject[] faceUpElements;
-    private GameObject[] faceDownElements;
 
     private void Awake()
     {
-        faceUpElements = new GameObject[]
+        faceUpElements = new[]
         {
             cardFront.gameObject,
             healthText.gameObject,
@@ -29,7 +27,7 @@ public class CardView : MonoBehaviour
             titleText.gameObject,
             cardText.gameObject
         };
-        faceDownElements = new GameObject[]
+        faceDownElements = new[]
         {
             cardBack.gameObject
         };

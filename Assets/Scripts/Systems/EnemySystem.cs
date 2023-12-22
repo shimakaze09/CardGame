@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TheLiquidFire.AspectContainer;
+﻿using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Extensions;
 
 public class EnemySystem : Aspect

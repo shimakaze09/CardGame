@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Hero : Card, IArmored, ICombatant, IDestructable
+﻿public class Hero : Card, IArmored, ICombatant, IDestructable
 {
     // IArmored
     public int armor { get; set; }

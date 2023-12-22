@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TheLiquidFire.Notifications;
 using UnityEngine;
 using UnityEngine.UI;
-using TheLiquidFire.Notifications;
 
 public class ManaView : MonoBehaviour
 {

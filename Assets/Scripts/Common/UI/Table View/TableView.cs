@@ -1,12 +1,10 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using TheLiquidFire.DataTypes;
-using TheLiquidFire.Pooling;
 using TheLiquidFire.Extensions;
-using TheLiquidFire.Animation;
+using TheLiquidFire.Pooling;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace TheLiquidFire.UI
 {
@@ -101,7 +99,7 @@ namespace TheLiquidFire.UI
             var rowCount = cellCountForTableView(this);
 
             if (sizeForCellInTableView != null)
-                spacer = new NonUniformSpacer((int index) => { return sizeForCellInTableView(this, index); }, rowCount);
+                spacer = new NonUniformSpacer(index => { return sizeForCellInTableView(this, index); }, rowCount);
             else
                 spacer = new UniformSpacer(cellSize, rowCount);
 
@@ -185,7 +183,7 @@ namespace TheLiquidFire.UI
             var cell = cellPooler.GetScript<TableViewCell>(index);
             cellPooler.Collection.Remove(index);
             var tweener = cell.Remove();
-            tweener.completedEvent += (object sender, EventArgs e) => { cellPooler.EnqueueScript(cell); };
+            tweener.completedEvent += (sender, e) => { cellPooler.EnqueueScript(cell); };
         }
 
         private void InsertCellData(int index)
@@ -217,11 +215,9 @@ namespace TheLiquidFire.UI
             for (var i = 0; i < keys.Count; ++i)
             {
                 var key = keys[i];
-                if (key < index)
-                {
-                    continue;
-                }
-                else if (key == index)
+                if (key < index) continue;
+
+                if (key == index)
                 {
                     RemoveCellView(key);
                 }
@@ -259,7 +255,7 @@ namespace TheLiquidFire.UI
                 var cell = cellPooler.GetScript<TableViewCell>(index);
                 var tweener = cell.Shift(offset);
                 if (tweener != null)
-                    tweener.completedEvent += (object sender, EventArgs e) =>
+                    tweener.completedEvent += (sender, e) =>
                     {
                         if (index < visibleRange.x || index > visibleRange.y)
                             cellPooler.EnqueueByKey(index);

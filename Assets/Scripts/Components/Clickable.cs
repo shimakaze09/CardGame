@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TheLiquidFire.Notifications;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TheLiquidFire.Notifications;
 
 public class Clickable : MonoBehaviour, IPointerClickHandler
 {

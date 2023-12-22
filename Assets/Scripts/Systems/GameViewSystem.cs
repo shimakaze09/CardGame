@@ -1,25 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TheLiquidFire.AspectContainer;
 using UnityEngine;
-using TheLiquidFire.AspectContainer;
 
 public class GameViewSystem : MonoBehaviour, IAspect
 {
-    public IContainer container
-    {
-        get
-        {
-            if (_container == null)
-            {
-                _container = GameFactory.Create();
-                _container.AddAspect(this);
-            }
-
-            return _container;
-        }
-        set => _container = value;
-    }
-
     private IContainer _container;
 
     private ActionSystem actionSystem;
@@ -41,6 +24,21 @@ public class GameViewSystem : MonoBehaviour, IAspect
         actionSystem.Update();
     }
 
+    public IContainer container
+    {
+        get
+        {
+            if (_container == null)
+            {
+                _container = GameFactory.Create();
+                _container.AddAspect(this);
+            }
+
+            return _container;
+        }
+        set => _container = value;
+    }
+
     private void Temp_SetupSinglePlayer()
     {
         var match = container.GetMatch();
@@ -52,12 +50,18 @@ public class GameViewSystem : MonoBehaviour, IAspect
             for (var i = 0; i < Player.maxDeck; ++i)
             {
                 var card = new Minion();
-                card.name = "Card " + i.ToString();
+                card.name = "Card " + i;
                 card.cost = Random.Range(1, 10);
                 card.maxHitPoints = card.hitPoints = Random.Range(1, card.cost);
                 card.attack = card.cost - card.hitPoints;
                 card.allowedAttacks = 1;
                 card.ownerIndex = p.index;
+                if (i % 3 == 0)
+                {
+                    card.AddAspect(new Taunt());
+                    card.text = "Taunt";
+                }
+
                 p[Zones.Deck].Add(card);
             }
 

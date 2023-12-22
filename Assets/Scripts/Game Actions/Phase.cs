@@ -1,19 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
+using System.Collections;
 using TheLiquidFire.AspectContainer;
 
 public class Phase
 {
-    #region Fields
-
-    public readonly GameAction owner;
-    public readonly Action<IContainer> handler;
-    public Func<IContainer, GameAction, IEnumerator> viewer;
-
-    #endregion
-
     #region Constructor
 
     public Phase(GameAction owner, Action<IContainer> handler)
@@ -48,6 +38,14 @@ public class Phase
 
         if (!hitKeyFrame) handler(game);
     }
+
+    #endregion
+
+    #region Fields
+
+    public readonly GameAction owner;
+    public readonly Action<IContainer> handler;
+    public Func<IContainer, GameAction, IEnumerator> viewer;
 
     #endregion
 }

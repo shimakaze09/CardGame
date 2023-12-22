@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 
 namespace TheLiquidFire.Pooling
 {
@@ -16,8 +15,8 @@ namespace TheLiquidFire.Pooling
         #region Fields / Properties
 
         public string key = string.Empty;
-        public GameObject prefab = null;
-        public int prepopulate = 0;
+        public GameObject prefab;
+        public int prepopulate;
         public int maxCount = int.MaxValue;
         public bool autoRegister = true;
         public bool autoClear = true;

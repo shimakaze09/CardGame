@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace TheLiquidFire.Animation
+﻿namespace TheLiquidFire.Animation
 {
     public class TransformLocalPositionTweener : Vector3Tweener
     {

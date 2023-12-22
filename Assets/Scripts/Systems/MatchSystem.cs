@@ -1,11 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TheLiquidFire.AspectContainer;
+﻿using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
 
 public class MatchSystem : Aspect, IObserve
 {
+    public void Awake()
+    {
+        this.AddObserver(OnPerformChangeTurn, Global.PerformNotification<ChangeTurnAction>(), container);
+    }
+
+    public void Destroy()
+    {
+        this.RemoveObserver(OnPerformChangeTurn, Global.PerformNotification<ChangeTurnAction>(), container);
+    }
+
     public void ChangeTurn()
     {
         var match = container.GetMatch();
@@ -17,16 +24,6 @@ public class MatchSystem : Aspect, IObserve
     {
         var action = new ChangeTurnAction(index);
         container.Perform(action);
-    }
-
-    public void Awake()
-    {
-        this.AddObserver(OnPerformChangeTurn, Global.PerformNotification<ChangeTurnAction>(), container);
-    }
-
-    public void Destroy()
-    {
-        this.RemoveObserver(OnPerformChangeTurn, Global.PerformNotification<ChangeTurnAction>(), container);
     }
 
     private void OnPerformChangeTurn(object sender, object args)

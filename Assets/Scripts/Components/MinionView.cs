@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TheLiquidFire.AspectContainer;
-using TheLiquidFire.Notifications;
+﻿using UnityEngine;
 
 public class MinionView : BattlefieldCardView
 {
@@ -23,7 +18,10 @@ public class MinionView : BattlefieldCardView
     {
         if (minion == null)
             return;
-        avatar.sprite = isActive ? active : inactive;
+        if (minion.GetAspect<Taunt>() == null)
+            avatar.sprite = isActive ? active : inactive;
+        else
+            avatar.sprite = isActive ? activeTaunt : inactiveTaunt;
         attack.text = minion.attack.ToString();
         health.text = minion.hitPoints.ToString();
     }

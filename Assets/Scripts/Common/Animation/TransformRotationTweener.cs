@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace TheLiquidFire.Animation
+﻿namespace TheLiquidFire.Animation
 {
     public class TransformRotationTweener : QuaternionTweener
     {

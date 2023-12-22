@@ -1,16 +1,15 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Notifications;
-using TheLiquidFire.Animation;
+using UnityEngine;
 
 public class ClickToPlayCardController : MonoBehaviour
 {
-    private IContainer game;
-    private Container container;
-    private StateMachine stateMachine;
     private CardView activeCardView;
+    private Container container;
+
+    private IContainer game;
+    private StateMachine stateMachine;
 
     private void Awake()
     {
@@ -115,7 +114,7 @@ public class ClickToPlayCardController : MonoBehaviour
         private IEnumerator HideProcess()
         {
             var handView = owner.activeCardView.GetComponentInParent<HandView>();
-            yield return owner.StartCoroutine(handView.LayoutCards(true));
+            yield return owner.StartCoroutine(handView.LayoutCards());
             owner.stateMachine.ChangeState<ResetState>();
         }
     }
