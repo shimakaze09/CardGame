@@ -1,4 +1,6 @@
-﻿using TheLiquidFire.AspectContainer;
+﻿using System;
+using System.Collections.Generic;
+using TheLiquidFire.AspectContainer;
 
 public class Card : Container
 {
@@ -9,4 +11,12 @@ public class Card : Container
     public int ownerIndex;
     public string text;
     public Zones zone = Zones.Deck;
+
+    public virtual void Load(Dictionary<string, object> data)
+    {
+        id = (string)data["id"];
+        name = (string)data["name"];
+        text = (string)data["text"];
+        cost = Convert.ToInt32(data["cost"]);
+    }
 }

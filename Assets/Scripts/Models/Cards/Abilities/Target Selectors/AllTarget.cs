@@ -14,4 +14,10 @@ public class AllTarget : Aspect, ITargetSelector
         result.AddRange(marks);
         return result;
     }
+
+    public void Load(Dictionary<string, object> data)
+    {
+        var markData = (Dictionary<string, object>)data["mark"];
+        mark = new Mark(markData);
+    }
 }

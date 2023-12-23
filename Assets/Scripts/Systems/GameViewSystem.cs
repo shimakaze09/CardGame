@@ -47,8 +47,7 @@ public class GameViewSystem : MonoBehaviour, IAspect
 
         foreach (var p in match.players)
         {
-            var deck = DeckFactory.Create();
-            foreach (var card in deck) card.ownerIndex = p.index;
+            var deck = DeckFactory.CreateDeck("DemoDeck", p.index);
             p[Zones.Deck].AddRange(deck);
 
             var hero = new Hero();

@@ -5,8 +5,9 @@ namespace TheLiquidFire.UI
 {
     public class UniformSpacer : ISpacer
     {
-        private readonly int CellSize;
         private int CellCount;
+
+        private readonly int CellSize;
 
         public UniformSpacer(int cellSize, int cellCount)
         {

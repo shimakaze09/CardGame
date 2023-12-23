@@ -11,4 +11,8 @@ public class ManualTarget : Aspect, ITargetSelector
         result.Add(target.selected);
         return result;
     }
+
+    public void Load(Dictionary<string, object> data)
+    {
+    }
 }

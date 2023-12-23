@@ -1,158 +1,124 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class DeckFactory
 {
-    public static List<Card> Create()
+    private static Dictionary<string, Dictionary<string, object>> _cards;
+
+    // Maps from a Card ID, to the Card's Data
+    public static Dictionary<string, Dictionary<string, object>> Cards
     {
-        var deck = new List<Card>();
-        Func<Card>[] builder =
+        get
         {
-            Card1, Card2, Card3, Card4, Card5,
-            Card6, Card7, Card8, Card9, Card10,
-            Card11, Card12, Card13, Card14, Card15
-        };
-        foreach (var func in builder)
+            if (_cards == null) _cards = LoadDemoCollection();
+            return _cards;
+        }
+    }
+
+    private static Dictionary<string, Dictionary<string, object>> LoadDemoCollection()
+    {
+        var file = Resources.Load<TextAsset>("DemoCards");
+        var dict = MiniJSON.Json.Deserialize(file.text) as Dictionary<string, object>;
+        Resources.UnloadAsset(file);
+
+        var array = (List<object>)dict["cards"];
+        var result = new Dictionary<string, Dictionary<string, object>>();
+        foreach (var entry in array)
         {
-            deck.Add(func());
-            deck.Add(func());
+            var cardData = (Dictionary<string, object>)entry;
+            var id = (string)cardData["id"];
+            result.Add(id, cardData);
         }
 
-        return deck;
+        return result;
     }
 
-    private static Card Card1()
+    public static List<Card> CreateDeck(string fileName, int ownerIndex)
     {
-        var card = CreateCard<Spell>("Shoots A Lot", "3 damage to random enemies.", 1);
-        var ability = AddAbility(card, typeof(DamageAction).Name, 1);
-        var targetSelector = new RandomTarget();
-        targetSelector.mark = new Mark(Alliance.Enemy, Zones.Active);
-        targetSelector.count = 3;
-        ability.AddAspect<ITargetSelector>(targetSelector);
+        var file = Resources.Load<TextAsset>(fileName);
+        var contents = MiniJSON.Json.Deserialize(file.text) as Dictionary<string, object>;
+        Resources.UnloadAsset(file);
+
+        var array = (List<object>)contents["deck"];
+        var result = new List<Card>();
+        foreach (var item in array)
+        {
+            var id = (string)item;
+            var card = CreateCard(id, ownerIndex);
+            result.Add(card);
+        }
+
+        return result;
+    }
+
+    public static Card CreateCard(string id, int ownerIndex)
+    {
+        var cardData = Cards[id];
+        var card = CreateCard(cardData, ownerIndex);
+        AddTarget(card, cardData);
+        AddAbilities(card, cardData);
+        AddMechanics(card, cardData);
         return card;
     }
 
-    private static Card Card2()
+    private static Card CreateCard(Dictionary<string, object> data, int ownerIndex)
     {
-        return CreateMinion("Grunt 1", string.Empty, 1, 2, 1);
+        var cardType = (string)data["type"];
+        var type = Type.GetType(cardType);
+        var instance = Activator.CreateInstance(type) as Card;
+        instance.Load(data);
+        instance.ownerIndex = ownerIndex;
+        return instance;
     }
 
-    private static Card Card3()
+    private static void AddTarget(Card card, Dictionary<string, object> data)
     {
-        var card = CreateCard<Spell>("Wide Boom", "1 damage to all enemy minions.", 2);
-        var ability = AddAbility(card, typeof(DamageAction).Name, 1);
-        var targetSelector = new AllTarget();
-        targetSelector.mark = new Mark(Alliance.Enemy, Zones.Battlefield);
-        ability.AddAspect<ITargetSelector>(targetSelector);
-        return card;
-    }
-
-    private static Card Card4()
-    {
-        return CreateMinion("Grunt 2", string.Empty, 2, 3, 2);
-    }
-
-    private static Card Card5()
-    {
-        var card = CreateMinion("Rich Grunt", "Draw a card when summoned.", 2, 1, 1);
-        AddAbility(card, typeof(DrawCardsAction).Name, 1);
-        return card;
-    }
-
-    private static Card Card6()
-    {
-        return CreateMinion("Grunt 3", string.Empty, 2, 2, 3);
-    }
-
-    private static Card Card7()
-    {
-        var card = CreateCard<Spell>("Card Lovin'", "Draw 2 cards", 3);
-        AddAbility(card, typeof(DrawCardsAction).Name, 2);
-        return card;
-    }
-
-    private static Card Card8()
-    {
-        var card = CreateMinion("Grunt 4", "Taunt", 3, 2, 2);
-        card.AddAspect<Taunt>();
-        return card;
-    }
-
-    private static Card Card9()
-    {
-        var card = CreateMinion("Grunt 5", "Taunt", 3, 1, 3);
-        card.AddAspect<Taunt>();
-        return card;
-    }
-
-    private static Card Card10()
-    {
-        var card = CreateCard<Spell>("Focus Beam", "6 damage", 4);
-        var ability = AddAbility(card, typeof(DamageAction).Name, 6);
-        ability.AddAspect<ITargetSelector>(new ManualTarget());
+        if (data.ContainsKey("target") == false)
+            return;
+        var targetData = (Dictionary<string, object>)data["target"];
         var target = card.AddAspect<Target>();
-        target.allowed = new Mark(Alliance.Any, Zones.Active);
-        target.preferred = new Mark(Alliance.Enemy, Zones.Active);
-        return card;
+        var allowedData = (Dictionary<string, object>)targetData["allowed"];
+        target.allowed = new Mark(allowedData);
+        var preferredData = (Dictionary<string, object>)targetData["preferred"];
+        target.preferred = new Mark(preferredData);
     }
 
-    private static Card Card11()
+    private static void AddAbilities(Card card, Dictionary<string, object> data)
     {
-        return CreateMinion("Grunt 6", string.Empty, 4, 2, 7);
+        if (data.ContainsKey("abilities") == false)
+            return;
+        var abilities = (List<object>)data["abilities"];
+        foreach (var entry in abilities)
+        {
+            var abilityData = (Dictionary<string, object>)entry;
+            var ability = AddAbility(card, abilityData);
+            AddSelector(ability, abilityData);
+        }
     }
 
-    private static Card Card12()
-    {
-        var card = CreateMinion("Grunt 7", "Taunt", 5, 2, 7);
-        card.AddAspect<Taunt>();
-        return card;
-    }
-
-    private static Card Card13()
-    {
-        var card = CreateMinion("Grunt 8", "Taunt", 4, 3, 5);
-        card.AddAspect<Taunt>();
-        return card;
-    }
-
-    private static Card Card14()
-    {
-        var card = CreateMinion("Grunt 9", "3 Damage to Opponent", 5, 4, 4);
-        var ability = AddAbility(card, typeof(DamageAction).Name, 3);
-        var targetSelector = new AllTarget();
-        targetSelector.mark = new Mark(Alliance.Enemy, Zones.Hero);
-        ability.AddAspect<ITargetSelector>(targetSelector);
-        return card;
-    }
-
-    private static Card Card15()
-    {
-        return CreateMinion("Big Grunt", string.Empty, 6, 6, 7);
-    }
-
-    private static T CreateCard<T>(string name, string text, int cost) where T : Card, new()
-    {
-        var card = new T();
-        card.name = name;
-        card.text = text;
-        card.cost = cost;
-        return card;
-    }
-
-    private static Minion CreateMinion(string name, string text, int cost, int attack, int hitPoints)
-    {
-        var card = CreateCard<Minion>(name, text, cost);
-        card.attack = attack;
-        card.hitPoints = card.maxHitPoints = hitPoints;
-        card.allowedAttacks = 1;
-        return card;
-    }
-
-    private static Ability AddAbility(Card card, string actionName, object userInfo)
+    private static Ability AddAbility(Card card, Dictionary<string, object> data)
     {
         var ability = card.AddAspect<Ability>();
-        ability.actionName = actionName;
-        ability.userInfo = userInfo;
+        ability.actionName = (string)data["action"];
+        ability.userInfo = data["info"];
         return ability;
+    }
+
+    private static void AddSelector(Ability ability, Dictionary<string, object> data)
+    {
+        if (data.ContainsKey("targetSelector") == false)
+            return;
+        var selectorData = (Dictionary<string, object>)data["targetSelector"];
+        var typeName = (string)selectorData["type"];
+        var type = Type.GetType(typeName);
+        var instance = Activator.CreateInstance(type) as ITargetSelector;
+        instance.Load(selectorData);
+        ability.AddAspect(instance);
+    }
+
+    private static void AddMechanics(Card card, Dictionary<string, object> data)
+    {
+        if (data.ContainsKey("taunt")) card.AddAspect<Taunt>();
     }
 }

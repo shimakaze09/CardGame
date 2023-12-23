@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Extensions;
 
@@ -17,5 +18,12 @@ public class RandomTarget : Aspect, ITargetSelector
             return result;
         for (var i = 0; i < count; ++i) result.Add(marks.Random());
         return result;
+    }
+
+    public void Load(Dictionary<string, object> data)
+    {
+        var markData = (Dictionary<string, object>)data["mark"];
+        mark = new Mark(markData);
+        count = Convert.ToInt32(data["count"]);
     }
 }

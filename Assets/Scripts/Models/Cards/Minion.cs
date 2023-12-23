@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class Minion : Card, ICombatant, IDestructable
 {
@@ -15,4 +16,12 @@ public class Minion : Card, ICombatant, IDestructable
     // IDestructable
     public int hitPoints { get; set; }
     public int maxHitPoints { get; set; }
+
+    public override void Load(Dictionary<string, object> data)
+    {
+        base.Load(data);
+        attack = Convert.ToInt32(data["attack"]);
+        hitPoints = maxHitPoints = Convert.ToInt32(data["hit points"]);
+        allowedAttacks = 1;
+    }
 }
