@@ -135,8 +135,8 @@ public class ClickToPlayCardController : MonoBehaviour
         {
             base.Enter();
             var action = new PlayCardAction(owner.activeCardView.card);
-            owner.stateMachine.ChangeState<ResetState>();
             owner.game.Perform(action);
+            owner.stateMachine.ChangeState<ResetState>();
         }
     }
 
@@ -176,7 +176,8 @@ public class ClickToPlayCardController : MonoBehaviour
         {
             base.Enter();
             owner.stateMachine.ChangeState<WaitingForInputState>();
-            owner.game.ChangeState<PlayerIdleState>();
+            if (!owner.game.GetAspect<ActionSystem>().IsActive)
+                owner.game.ChangeState<PlayerIdleState>();
         }
     }
 

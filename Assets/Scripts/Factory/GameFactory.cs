@@ -7,6 +7,7 @@ public static class GameFactory
         var game = new Container();
 
         // Add Systems
+        game.AddAspect<AbilitySystem>();
         game.AddAspect<ActionSystem>();
         game.AddAspect<AttackSystem>();
         game.AddAspect<CardSystem>();
@@ -19,6 +20,7 @@ public static class GameFactory
         game.AddAspect<MatchSystem>();
         game.AddAspect<MinionSystem>();
         game.AddAspect<PlayerSystem>();
+        game.AddAspect<SpellSystem>();
         game.AddAspect<TargetSystem>();
         game.AddAspect<TauntSystem>();
         game.AddAspect<VictorySystem>();

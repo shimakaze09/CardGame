@@ -44,5 +44,14 @@ public class MinionSystem : Aspect, IObserve
         var cardSystem = container.GetAspect<CardSystem>();
         var summon = args as SummonMinionAction;
         cardSystem.ChangeZone(summon.minion, Zones.Battlefield);
+        PostSummonAbility(summon);
+    }
+
+    private void PostSummonAbility(SummonMinionAction action)
+    {
+        var card = action.minion;
+        var ability = card.GetAspect<Ability>();
+        if (ability != null)
+            container.AddReaction(new AbilityAction(ability));
     }
 }

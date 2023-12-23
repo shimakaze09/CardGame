@@ -47,24 +47,9 @@ public class GameViewSystem : MonoBehaviour, IAspect
 
         foreach (var p in match.players)
         {
-            for (var i = 0; i < Player.maxDeck; ++i)
-            {
-                var card = new Minion();
-                card.name = "Card " + i;
-                card.cost = Random.Range(1, 10);
-                card.maxHitPoints = card.hitPoints = Random.Range(1, card.cost);
-                card.attack = card.cost - card.hitPoints;
-                card.allowedAttacks = 1;
-                card.ownerIndex = p.index;
-                if (i % 3 == 0)
-                {
-                    card.AddAspect(new Taunt());
-                    card.text = "Taunt";
-                }
-
-                Temp_AddTargeting(card);
-                p[Zones.Deck].Add(card);
-            }
+            var deck = DeckFactory.Create();
+            foreach (var card in deck) card.ownerIndex = p.index;
+            p[Zones.Deck].AddRange(deck);
 
             var hero = new Hero();
             hero.hitPoints = hero.maxHitPoints = 30;
@@ -72,35 +57,6 @@ public class GameViewSystem : MonoBehaviour, IAspect
             hero.ownerIndex = p.index;
             hero.zone = Zones.Hero;
             p.hero.Add(hero);
-        }
-    }
-
-    private void Temp_AddTargeting(Card card)
-    {
-        var random = Random.Range(0, 3);
-        var target = card.AddAspect<Target>();
-        var text = string.IsNullOrEmpty(card.text) ? "" : card.text + ". ";
-        switch (random)
-        {
-            case 0:
-                target.required = false;
-                target.allowed = target.preferred = new Mark(Alliance.Ally, Zones.Active);
-                card.text = text + "Ally Target if available";
-                break;
-            case 1:
-                target.required = true;
-                target.allowed = target.preferred = new Mark(Alliance.Enemy, Zones.Active);
-                card.text = text + "Enemy Target required";
-                break;
-            case 2:
-                target.required = true;
-                target.allowed = target.preferred = new Mark(Alliance.Enemy, Zones.Battlefield);
-                card.text = text + "Enemy Minion Target required";
-                break;
-            default:
-                // Don't add anything
-                Debug.LogError("Shouldn't have gotten here");
-                break;
         }
     }
 }

@@ -21,11 +21,11 @@ public class TargetSystem : Aspect, IObserve
         if (target == null)
             return;
         var mark = mode == ControlModes.Computer ? target.preferred : target.allowed;
-        var candidates = GetMarks(target, mark);
+        var candidates = GetMarks(card, mark);
         target.selected = candidates.Count > 0 ? candidates.Random() : null;
     }
 
-    private List<Card> GetMarks(Target source, Mark mark)
+    public List<Card> GetMarks(Card source, Mark mark)
     {
         var marks = new List<Card>();
         var players = GetPlayers(source, mark);
@@ -38,15 +38,14 @@ public class TargetSystem : Aspect, IObserve
         return marks;
     }
 
-    private List<Player> GetPlayers(Target source, Mark mark)
+    private List<Player> GetPlayers(Card source, Mark mark)
     {
-        var card = source.container as Card;
         var dataSystem = container.GetAspect<DataSystem>();
         var players = new List<Player>();
         var pair = new Dictionary<Alliance, Player>
         {
-            { Alliance.Ally, dataSystem.match.players[card.ownerIndex] },
-            { Alliance.Enemy, dataSystem.match.players[1 - card.ownerIndex] }
+            { Alliance.Ally, dataSystem.match.players[source.ownerIndex] },
+            { Alliance.Enemy, dataSystem.match.players[1 - source.ownerIndex] }
         };
         foreach (var key in pair.Keys)
             if (mark.alliance.Contains(key))
@@ -54,7 +53,7 @@ public class TargetSystem : Aspect, IObserve
         return players;
     }
 
-    private List<Card> GetCards(Target source, Mark mark, Player player)
+    private List<Card> GetCards(Card source, Mark mark, Player player)
     {
         var cards = new List<Card>();
         var zones = new[]
@@ -76,11 +75,12 @@ public class TargetSystem : Aspect, IObserve
     private void OnValidatePlayCard(object sender, object args)
     {
         var playCardAction = sender as PlayCardAction;
-        var target = playCardAction.card.GetAspect<Target>();
+        var card = playCardAction.card;
+        var target = card.GetAspect<Target>();
         if (target == null || (target.required == false && target.selected == null))
             return;
         var validator = args as Validator;
-        var candidates = GetMarks(target, target.allowed);
+        var candidates = GetMarks(card, target.allowed);
         if (!candidates.Contains(target.selected)) validator.Invalidate();
     }
 }
